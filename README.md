@@ -18,7 +18,7 @@ Once OpenVPN has been installed, NGINX & Sendmail are installed and an email is 
   * Choose an image: CentOS
   * Choose a size: 512 MB
   * Choose a datacenter region: Any
-  * Select additional options: Check "User Data" & Add [Script](https://raw.githubusercontent.com/NathanZepol/VPN-Deployer/master/cloudvpndeploy.sh)
+  * Select additional options: Check "User Data" & Paste the [Script](https://raw.githubusercontent.com/NathanZepol/VPN-Deployer/master/user-data.txt)
   * Edit YOUR-NAME & YOUR-EMAIL in the "User Data" Script
 
 * You will receive an email with a link to download the .ovpn client file. This link automatically expires in 5 minutes.
