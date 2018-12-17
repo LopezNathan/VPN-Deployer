@@ -3,6 +3,10 @@
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
 
+# Update and Install WGET
+yum -y update && yum -y upgrade
+yum -y install wget
+
 # Download OpenVPN Installer
 cd /root/
 wget https://raw.githubusercontent.com/Angristan/OpenVPN-install/master/openvpn-install.sh
@@ -31,7 +35,7 @@ yum -y install nginx sendmail
 service nginx start
 
 # Restrict Traffic to Specified IP
-iptables -I INPUT \! --src $IP -m tcp -p tcp --dport 80 -j DROP
+iptables -I INPUT \! --src YOUR-IP -m tcp -p tcp --dport 80 -j DROP
 
 # Move OpenVPN Client File to NGINX Root
 cp /root/client.ovpn /usr/share/nginx/html/
@@ -40,7 +44,7 @@ cp /root/client.ovpn /usr/share/nginx/html/
 echo "Subject: VPN Client Download
 
 Download Link: http://$SERVER_IP/client.ovpn" > /root/email.txt
-sendmail $YOUR-EMAIL < /root/email.txt
+sendmail YOUR-EMAIL < /root/email.txt
 
 # Wait 5 Minutes for Download before Cleanup
 sleep 300
