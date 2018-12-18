@@ -49,4 +49,6 @@ Once the installer script has completed, you will receive an email with a link t
   * Choose a size: 512 MB
   * Choose a datacenter region: Any
   * Select additional options: Check "User Data" & Paste the [Script](https://raw.githubusercontent.com/LopezNathan/VPN-Deployer/master/OpenVPN-Deploy.sh)
-  * Edit YOUR-IP & YOUR-EMAIL in the "User Data" Script
+  * Edit $IP & $EMAIL in the "User Data" Script
+    * IP - Your local IP address
+    * Email - Where the download link will be sent
