@@ -3,6 +3,10 @@
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
 
+# Update and Install WGET
+yum -y update && yum -y upgrade
+yum -y install wget
+
 # Download OpenVPN Installer
 cd /root/
 wget https://raw.githubusercontent.com/Angristan/OpenVPN-install/master/openvpn-install.sh
