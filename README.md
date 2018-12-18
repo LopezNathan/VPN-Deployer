@@ -48,5 +48,5 @@ Once the installer script has completed, you will receive an email with a link t
   * Choose an image: CentOS
   * Choose a size: 512 MB
   * Choose a datacenter region: Any
-  * Select additional options: Check "User Data" & Paste the [Script](https://raw.githubusercontent.com/NathanZepol/VPN-Deployer/master/user-data.txt)
+  * Select additional options: Check "User Data" & Paste the [Script](https://raw.githubusercontent.com/LopezNathan/VPN-Deployer/master/OpenVPN-Deploy.sh)
   * Edit YOUR-IP & YOUR-EMAIL in the "User Data" Script
