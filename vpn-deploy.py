@@ -5,9 +5,7 @@
 # Version 0.4
 
 import os
-#import fileinput
 import argparse
-#import requests
 import digitalocean
 
 DO_API_TOKEN=os.environ["DO_API_TOKEN"]
@@ -33,22 +31,4 @@ wget -O /root/openvpn-deploy.sh https://raw.githubusercontent.com/LopezNathan/VP
 chmod +x /root/openvpn-deploy.sh && bash /root/openvpn-deploy.sh""",
                                backups=True)
 
-# with fileinput.FileInput('/tmp/user-data.txt', inplace=True, backup='.bak') as file:
-#     for line in file:
-#         print(line.replace('YOUR-IP', args.ip), end='')
-
-# with fileinput.FileInput('/tmp/user-data.txt', inplace=True, backup='.bak') as file:
-#     for line in file:
-#         print(line.replace('YOUR-EMAIL', args.email), end='')
-
-# with open('/tmp/user-data.txt', 'r') as myfile:
-#     user_data=myfile.read()
-# myfile.close()
-    
-#payload = {'name': 'test', 'region': 'nyc3', 'size': '512mb', 'image': 'centos-7-x64', 'user_data': user_data}
-#create = requests.post("https://api.digitalocean.com/v2/droplets", params=payload, headers={"Authorization": "Bearer %s" % DO_API_TOKEN, "Content-Type": "application/json"})
-
 droplet.create()
-
-# for i in create:
-#     print(i)
