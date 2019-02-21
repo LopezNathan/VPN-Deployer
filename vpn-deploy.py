@@ -17,8 +17,6 @@ parser.add_argument("--name", default='VPN', dest="name", help="Droplet Name")
 parser.add_argument("--region", default='nyc1', dest="region", help="Droplet Region")
 args = parser.parse_args()
 
-#TODO (user-data): CHANGE WGET TO CURL (installed by default?) AND REMOVE YUM (already in-use within bash script)
-
 class Deploy:
 
     def create_vpn(self, ip_address, email_address):
