@@ -30,8 +30,8 @@ class Deploy:
                                     user_data=f"""#!/bin/bash
         export IP={args.ip}
         export EMAIL={args.email}
-        curl -o /root/openvpn-deploy.sh https://raw.githubusercontent.com/LopezNathan/VPN-Deployer/master/OpenVPN-Deploy.sh
-        chmod +x /root/openvpn-deploy.sh && bash /root/openvpn-deploy.sh""",
+        curl -o /root/vpn-installer.sh https://raw.githubusercontent.com/LopezNathan/VPN-Deployer/master/OpenVPN-Deploy.sh
+        chmod +x /root/vpn-installer.sh && bash /root/vpn-installer.sh""",
                                     backups=True)
 
         droplet.create()

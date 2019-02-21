@@ -51,4 +51,4 @@ sleep 300
 
 # Start Cleanup
 yum -y remove nginx sendmail && yum clean all
-rm -f /usr/share/nginx/html/client.ovpn /root/openvpn-deploy.sh /root/openvpn-install.sh /root/openvpn-install-options.txt /root/client.ovpn /root/email.txt
+rm -f /usr/share/nginx/html/client.ovpn /root/vpn-installer.sh /root/openvpn-install.sh /root/openvpn-install-options.txt /root/client.ovpn /root/email.txt
