@@ -2,7 +2,7 @@
 # VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 0.5.2
+# Version 0.5.3
 
 import os
 import argparse
@@ -28,7 +28,7 @@ class Deploy:
                                     user_data=f"""#!/bin/bash
         export IP={args.ip}
         export EMAIL={args.email}
-        curl -o /root/vpn-installer.sh https://raw.githubusercontent.com/LopezNathan/VPN-Deployer/master/OpenVPN-Deploy.sh
+        curl -o /root/vpn-installer.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/vpn-installer.sh
         chmod +x /root/vpn-installer.sh && bash /root/vpn-installer.sh""",
                                     backups=True)
 
