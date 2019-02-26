@@ -2,11 +2,10 @@
 # Cloud VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 1.1.1
+# Version 1.1.2
 
 # Update and Install WGET
 yum -y update && yum -y upgrade
-yum -y install wget
 
 # Download & Run OpenVPN Installer
 curl -o /root/openvpn-install.sh  https://raw.githubusercontent.com/LopezNathan/openvpn-install/master/openvpn-install.sh
