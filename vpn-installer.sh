@@ -7,28 +7,30 @@
 yum -y update && yum -y upgrade
 yum -y install wget
 
-# Download OpenVPN Installer
+# Download & Run OpenVPN Installer
 cd /root/
 wget https://raw.githubusercontent.com/Angristan/OpenVPN-install/master/openvpn-install.sh
 chmod +x openvpn-install.sh
+export AUTO_INSTALL=y
+bash /root/openvpn-install.sh
 
 # Define Server IP
-SERVER_IP="$(hostname -I | cut -d' ' -f1)"
+# SERVER_IP="$(hostname -I | cut -d' ' -f1)"
 
-# Create OpenVPN Installer Options File
-echo "$SERVER_IP
-n
-1
-1
-3
-n
-n
+# # Create OpenVPN Installer Options File
+# echo "$SERVER_IP
+# n
+# 1
+# 1
+# 3
+# n
+# n
 
-client
-1" > /root/openvpn-install-options.txt
+# client
+# 1" > /root/openvpn-install-options.txt
 
-# Start OpenVPN Installer
-bash /root/openvpn-install.sh < /root/openvpn-install-options.txt
+# # Start OpenVPN Installer
+# bash /root/openvpn-install.sh < /root/openvpn-install-options.txt
 
 # Install NGINX & Sendmail
 yum -y install nginx sendmail
@@ -51,4 +53,4 @@ sleep 300
 
 # Start Cleanup
 yum -y remove nginx sendmail && yum clean all
-rm -f /usr/share/nginx/html/client.ovpn /root/vpn-installer.sh /root/openvpn-install.sh /root/openvpn-install-options.txt /root/client.ovpn /root/email.txt
+rm -f /usr/share/nginx/html/client.ovpn /root/vpn-installer.sh /root/openvpn-install.sh /root/client.ovpn /root/email.txt
