@@ -2,9 +2,9 @@
 # Cloud VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 1.1.2
+# Version 1.2.0
 
-# Update and Install WGET
+# Update System
 yum -y update && yum -y upgrade
 
 # Download & Run OpenVPN Installer
@@ -12,9 +12,6 @@ curl -o /root/openvpn-install.sh  https://raw.githubusercontent.com/LopezNathan/
 chmod +x /root/openvpn-install.sh
 export AUTO_INSTALL=y
 bash /root/openvpn-install.sh
-
-# Define Server IP
-SERVER_IP="$(hostname -I | cut -d' ' -f1)"
 
 # Install NGINX & Sendmail
 yum -y install nginx sendmail
@@ -29,7 +26,7 @@ cp /root/client.ovpn /usr/share/nginx/html/
 # Send Email About File Download
 echo "Subject: VPN Client Download
 
-Download Link: http://$SERVER_IP/client.ovpn" > /root/email.txt
+Download Link: http://"$(hostname -I | cut -d' ' -f1)"/client.ovpn" > /root/email.txt
 sendmail $EMAIL < /root/email.txt
 
 # Wait 5 Minutes for Download before Cleanup
