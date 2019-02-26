@@ -2,7 +2,7 @@
 # Cloud VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 1.1.0
+# Version 1.1.1
 
 # Update and Install WGET
 yum -y update && yum -y upgrade
@@ -16,21 +16,6 @@ bash /root/openvpn-install.sh
 
 # Define Server IP
 SERVER_IP="$(hostname -I | cut -d' ' -f1)"
-
-# # Create OpenVPN Installer Options File
-# echo "$SERVER_IP
-# n
-# 1
-# 1
-# 3
-# n
-# n
-
-# client
-# 1" > /root/openvpn-install-options.txt
-
-# # Start OpenVPN Installer
-# bash /root/openvpn-install.sh < /root/openvpn-install-options.txt
 
 # Install NGINX & Sendmail
 yum -y install nginx sendmail
