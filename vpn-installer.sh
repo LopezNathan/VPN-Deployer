@@ -9,13 +9,13 @@ yum -y install wget
 
 # Download & Run OpenVPN Installer
 cd /root/
-wget https://raw.githubusercontent.com/Angristan/OpenVPN-install/master/openvpn-install.sh
+wget https://raw.githubusercontent.com/LopezNathan/openvpn-install/master/openvpn-install.sh
 chmod +x openvpn-install.sh
 export AUTO_INSTALL=y
 bash /root/openvpn-install.sh
 
 # Define Server IP
-# SERVER_IP="$(hostname -I | cut -d' ' -f1)"
+SERVER_IP="$(hostname -I | cut -d' ' -f1)"
 
 # # Create OpenVPN Installer Options File
 # echo "$SERVER_IP
