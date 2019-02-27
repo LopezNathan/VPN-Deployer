@@ -2,16 +2,15 @@
 # VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 0.7.4
+# Version 0.8.0
 
-import os
 import argparse
 import digitalocean
 import time
 import requests
+import getpass
 
-#TODO - Accept user input for this securely
-DO_API_TOKEN=os.environ["DO_API_TOKEN"]
+DO_API_TOKEN = getpass.getpass('DigitalOcean API Token: ')
 
 parser = argparse.ArgumentParser(description="VPN Deploy Script with DigitalOcean")
 parser.add_argument("ip", help="Your IP Address")
