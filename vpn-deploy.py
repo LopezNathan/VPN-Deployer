@@ -2,12 +2,16 @@
 # VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 0.5.3
+# Version 0.6.0
 
 import os
 import argparse
 import digitalocean
+import time
+import requests
+import sys
 
+#TODO - Accept user input for this securely
 DO_API_TOKEN=os.environ["DO_API_TOKEN"]
 
 parser = argparse.ArgumentParser(description="VPN Deploy Script with DigitalOcean")
@@ -36,3 +40,31 @@ class Deploy:
 
 vpn = Deploy()
 vpn.create_vpn(args.ip, args.email)
+
+time.sleep(10)
+print("Deploy Started!")
+print("This process typically takes less than 10 minutes.\n")
+
+droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % DO_API_TOKEN, "Content-Type": "application/json"})
+
+# TODO - Clean this mess up...
+for item in droplet_list.json()['droplets']:
+    #TODO - Convert "VPN" into args.name
+    if item['name'] == 'VPN':
+        droplet_vpn = item
+
+for item in droplet_vpn['networks']['v4']:
+    droplet_ip = item['ip_address']
+
+# TODO - Use something else instead of a while loop to check the actual progress.
+while True:
+    try:
+        check_deploy = requests.get(f"http://{droplet_ip}/client.ovpn")
+        print(f"""
+        \nDeploy Completed!
+        Download OpenVPN File: http://{droplet_ip}/client.ovpn"
+        """)
+        sys.exit() # dirtyyyyy...
+    except:
+        print("Deploy In-Progress...")
+        time.sleep(120)
