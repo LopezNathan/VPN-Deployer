@@ -2,7 +2,7 @@
 # VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 0.7.0
+# Version 0.7.1
 
 import os
 import argparse
@@ -38,12 +38,13 @@ class Deploy:
 
         droplet.create()
 
+print("Deploy Started!")
+print("This process typically takes less than 10 minutes.\n")
+
 vpn = Deploy()
 vpn.create_vpn(args.ip)
 
 time.sleep(10)
-print("Deploy Started!")
-print("This process typically takes less than 10 minutes.\n")
 
 droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % DO_API_TOKEN, "Content-Type": "application/json"})
 
@@ -61,7 +62,7 @@ while True:
     try:
         check_deploy = requests.get(f"http://{droplet_ip}/client.ovpn")
         print(f"""
-        \nDeploy Completed!
+        Deploy Completed!
         Download OpenVPN File: http://{droplet_ip}/client.ovpn
         """)
         break
