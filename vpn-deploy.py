@@ -2,7 +2,7 @@
 # VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 0.8.1
+# Version 0.9.0
 
 import argparse
 import digitalocean
@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 class Deploy:
 
-    def create_vpn(self, ip_address):
+    def create_droplet(self, ip_address):
         droplet = digitalocean.Droplet(token=f'{DO_API_TOKEN}',
                                     name=f'{args.name}',
                                     region=f'{args.region}',
@@ -39,32 +39,34 @@ class Deploy:
                                     backups=True)
 
         droplet.create()
+    
+    def get_droplet_ip(self):
+        droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % DO_API_TOKEN, "Content-Type": "application/json"})
+        # TODO - Clean this mess up...
+        # we should be returning something here
+        for item in droplet_list.json()['droplets']:
+            if item['name'] == args.name:
+                Deploy.droplet_vpn = item
+
+        for item in Deploy.droplet_vpn['networks']['v4']:
+            Deploy.droplet_ip = item['ip_address']
 
 print("\nDeploy Started!")
 print("This process typically takes less than 5 minutes.\n")
 
 vpn = Deploy()
-vpn.create_vpn(args.ip)
 
+vpn.create_droplet(args.ip)
 time.sleep(10)
-
-droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % DO_API_TOKEN, "Content-Type": "application/json"})
-
-# TODO - Clean this mess up...
-for item in droplet_list.json()['droplets']:
-    if item['name'] == args.name:
-        droplet_vpn = item
-
-for item in droplet_vpn['networks']['v4']:
-    droplet_ip = item['ip_address']
+vpn.get_droplet_ip()
 
 # TODO - Use something else instead of a while loop to check the actual progress.
 while True:
     try:
-        check_deploy = requests.get(f"http://{droplet_ip}/client.ovpn")
+        check_deploy = requests.get(f"http://{Deploy.droplet_ip}/client.ovpn")
         print(f"""
         Deploy Completed!
-        Download OpenVPN File: http://{droplet_ip}/client.ovpn
+        Download OpenVPN File: http://{Deploy.droplet_ip}/client.ovpn
         """)
         break
     except:
