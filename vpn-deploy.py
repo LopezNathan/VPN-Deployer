@@ -43,7 +43,8 @@ class Deploy:
     def get_droplet_ip(self):
         droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % DO_API_TOKEN, "Content-Type": "application/json"})
         # TODO - Clean this mess up...
-        # we should be returning something here
+        # TODO - we should be returning something here
+        # TODO - what happens if we have multiple droplets with same name?...
         for item in droplet_list.json()['droplets']:
             if item['name'] == args.name:
                 Deploy.droplet_vpn = item
@@ -61,6 +62,7 @@ time.sleep(10)
 vpn.get_droplet_ip()
 
 # TODO - Use something else instead of a while loop to check the actual progress.
+# can we move it into the class and check the progress on a class method easier?
 while True:
     try:
         check_deploy = requests.get(f"http://{Deploy.droplet_ip}/client.ovpn")

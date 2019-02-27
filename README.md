@@ -33,9 +33,10 @@ optional arguments:
 
 > python vpn-deploy.py 123.123.123.123
 
-- Your IP Address is needed to restrict port `80`.
+- You will be prompted for your [DigitalOcean API Token](https://www.digitalocean.com/docs/api/create-personal-access-token/). This is only passed through `getpass` to the DigitalOcean API during the creation of the droplet and obtaining the droplet IP.
+- Your IP Address is needed to restrict port `80` for the OpenVPN download link.
 
-Once the installer script has completed, the script will output the OpenVPN download link. This link automatically expires in 5 minutes.
+Once the installer script has completed, it will output the OpenVPN download link. This link automatically expires in 5 minutes.
 
 ## Dependencies
 
