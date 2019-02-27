@@ -17,7 +17,7 @@ bash /root/openvpn-install.sh
 if [ "$EMAIL" ]; then
     # Install NGINX & Sendmail
     yum -y install nginx sendmail
-    
+    service nginx start
     # Send Email About File Download
     echo "Subject: VPN Client Download
 

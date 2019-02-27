@@ -30,7 +30,8 @@ class Deploy:
                                     size_slug='512mb',
                                     user_data=f"""#!/bin/bash
         export IP={args.ip}
-        export EMAIL={args.email}
+        # fix...
+        #export EMAIL={args.email}
         curl -o /root/vpn-installer.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/vpn-installer.sh
         chmod +x /root/vpn-installer.sh && bash /root/vpn-installer.sh""",
                                     backups=True)
