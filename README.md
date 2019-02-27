@@ -37,7 +37,7 @@ optional arguments:
 
 Once the installer script has completed, the script will output the OpenVPN download link. This link automatically expires in 5 minutes.
 
-## Depencies
+## Dependencies
 
 - Python 3
 
