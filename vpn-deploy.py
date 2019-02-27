@@ -2,7 +2,7 @@
 # VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 0.7.2
+# Version 0.7.3
 
 import os
 import argparse
@@ -31,7 +31,7 @@ class Deploy:
                                     user_data=f"""#!/bin/bash
         export IP={args.ip}
         export EMAIL={args.email}
-        if [[ "${EMAIL}" == "None" ]]; then
+        if [[ $EMAIL == None ]]; then
             unset EMAIL
         fi
         curl -o /root/vpn-installer.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/vpn-installer.sh
@@ -41,7 +41,7 @@ class Deploy:
         droplet.create()
 
 print("Deploy Started!")
-print("This process typically takes less than 10 minutes.\n")
+print("This process typically takes less than 5 minutes.\n")
 
 vpn = Deploy()
 vpn.create_vpn(args.ip)
@@ -70,4 +70,4 @@ while True:
         break
     except:
         print("Deploy In-Progress...")
-        time.sleep(120)
+        time.sleep(60)
