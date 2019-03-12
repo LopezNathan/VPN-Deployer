@@ -2,7 +2,7 @@
 # Cloud VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 1.5.0
+# Version 1.6.0
 
 # Update System
 # yum -y update && yum -y upgrade
@@ -33,6 +33,36 @@ fi
 
 # Restrict Traffic to Specified IP
 iptables -I INPUT \! --src $IP -m tcp -p tcp --dport 80 -j DROP
+# # Loopback
+# iptables -A INPUT -i lo -j ACCEPT
+# iptables -A OUTPUT -o lo -j ACCEPT
+# iptables -A INPUT -d 127.0.0.0/8 -j REJECT
+# iptables -A OUTPUT -d 127.0.0.0/8 -j REJECT
+# # Established Connections
+# iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+# iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+# # Ping of Death
+# iptables -N PING_OF_DEATH
+# iptables -A PING_OF_DEATH -p icmp --icmp-type echo-request -m hashlimit --hashlimit 1/s --hashlimit-burst 10 --hashlimit-htable-expire 300000 --hashlimit-mode srcip --hashlimit-name t_PING_OF_DEATH -j RETURN
+# iptables -A PING_OF_DEATH -j DROP
+# iptables -A INPUT -p icmp --icmp-type echo-request -j PING_OF_DEATH
+# # Port Scanning
+# iptables -N PORTSCAN
+# iptables -A PORTSCAN -p tcp --tcp-flags ACK,FIN FIN -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags ACK,PSH PSH -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags ACK,URG URG -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags FIN,RST FIN,RST -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags ALL ALL -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags ALL NONE -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags ALL SYN,FIN,PSH,URG -j DROP
+# iptables -A PORTSCAN -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
+# # Fragmented Packages
+# iptables -A INPUT -f -j DROP
+# # SYN Packets
+# iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
 
 # Move OpenVPN Client File to NGINX Root
 cp /root/client.ovpn /usr/share/nginx/html/

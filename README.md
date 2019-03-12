@@ -5,7 +5,7 @@
 This script will install OpenVPN utilizing the [OpenVPN Installer by Angristan](https://github.com/Angristan/OpenVPN-install) on a DigitalOcean Droplet.
 Once OpenVPN has been installed, NGINX is installed and a link is provided to download the OpenVPN Client file. This link will only be available for 5 minutes before NGINX is removed.
 
-**This is only intended for short-term/one-time use, as currently no extra security is added to the base server.**
+**This is only intended for short-term/one-time use, as currently no major security protection is added to the base server.**
 
 #### Todo
 
