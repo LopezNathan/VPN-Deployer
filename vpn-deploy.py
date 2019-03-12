@@ -2,7 +2,7 @@
 # VPN Deploy Script
 # Fully Install OpenVPN on DigitalOcean Automatically
 # Utilizes OpenVPN-Install by Angristan (https://github.com/Angristan/OpenVPN-install)
-# Version 0.10.0
+# Version 0.10.1
 
 import argparse
 import digitalocean
@@ -66,10 +66,7 @@ vpn.get_droplet_ip()
 while True:
     try:
         check_deploy = requests.get(f"http://{Deploy.droplet_ip}/client.ovpn")
-        print(f"""
-        Deploy Completed!
-        Download OpenVPN File: http://{Deploy.droplet_ip}/client.ovpn
-        """)
+        print(f"\nDeploy Completed!\nDownload OpenVPN File: http://{Deploy.droplet_ip}/client.ovpn")
         break
     except:
         print("Deploy In-Progress...")
