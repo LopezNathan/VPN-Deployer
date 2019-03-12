@@ -10,7 +10,7 @@ yum -y install yum-plugin-security
 yum --security update
 
 # Download & Run OpenVPN Installer
-curl -o /root/openvpn-install.sh  https://raw.githubusercontent.com/LopezNathan/openvpn-install/master/openvpn-install.sh
+curl -o /root/openvpn-install.sh  https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/openvpn-install.sh
 chmod +x /root/openvpn-install.sh
 export AUTO_INSTALL=y
 bash /root/openvpn-install.sh
@@ -46,4 +46,4 @@ if [ "$EMAIL" ]; then
 else
     yum -y remove nginx && yum clean all
 fi
-rm -f /usr/share/nginx/html/client.ovpn /root/vpn-installer.sh /root/openvpn-install.sh /root/client.ovpn /root/email.txt
+rm -f /usr/share/nginx/html/client.ovpn /root/openvpn-install-prep.sh /root/openvpn-install.sh /root/client.ovpn /root/email.txt

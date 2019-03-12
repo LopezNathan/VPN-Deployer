@@ -34,8 +34,8 @@ class Deploy:
         if [[ $EMAIL == "None" ]]; then
             unset EMAIL
         fi
-        curl -o /root/vpn-installer.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/vpn-installer.sh
-        chmod +x /root/vpn-installer.sh && bash /root/vpn-installer.sh""",
+        curl -o /root/openvpn-install-prep.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/openvpn-install-prep.sh
+        chmod +x /root/openvpn-install-prep.sh && bash /root/openvpn-install-prep.sh""",
                                     backups=True)
 
         droplet.create()
