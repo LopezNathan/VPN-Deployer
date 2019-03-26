@@ -4,7 +4,7 @@ import digitalocean
 def api_authentication(DO_API_TOKEN):
     api_authentication.DO_API_TOKEN = DO_API_TOKEN
 
-def create_droplet(ip, name='VPN', region='nyc1', email=None):
+def create_droplet(ip, name=None, region=None, email=None):
     droplet = digitalocean.Droplet(token=f'{api_authentication.DO_API_TOKEN}',
                                 name=f'{name}',
                                 region=f'{region}',
@@ -22,7 +22,7 @@ def create_droplet(ip, name='VPN', region='nyc1', email=None):
 
     return droplet.create()
 
-def get_droplet_ip(name='VPN'):
+def get_droplet_ip(name=None):
     droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % api_authentication.DO_API_TOKEN, "Content-Type": "application/json"})
     # TODO - Clean this mess up...
     # TODO - we should be returning something here
@@ -33,3 +33,5 @@ def get_droplet_ip(name='VPN'):
 
     for item in droplet_vpn['networks']['v4']:
         droplet_ip = item['ip_address']
+    
+    return droplet_ip

@@ -30,9 +30,9 @@ def main():
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
 
-    droplets.create_droplet(args.ip)
+    droplets.create_droplet(args.ip, args.name, args.region, args.email)
     time.sleep(10)
-    droplets.get_droplet_ip()
+    droplets.get_droplet_ip(args.name)
 
     # TODO - Use something else instead of a while loop to check the actual progress.
     # can we move it into the class and check the progress on a class method easier?
