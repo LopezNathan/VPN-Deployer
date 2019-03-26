@@ -17,7 +17,7 @@ def create_droplet(ip, name=None, region=None, email=None):
     if [[ $EMAIL == "None" ]]; then
         unset EMAIL
     fi
-    curl -o /root/openvpn-install-prep.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/openvpn-install-prep.sh
+    curl -o /root/openvpn-install-prep.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install-prep.sh
     chmod +x /root/openvpn-install-prep.sh && bash /root/openvpn-install-prep.sh""",
                                 backups=True)
 
