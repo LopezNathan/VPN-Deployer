@@ -1,10 +1,5 @@
 import argparse
 
-
-## TODO
-# droplet_ip variable broken?
-# email, vpn, region arguments being ignored.
-
 def create_parser():
     parser = argparse.ArgumentParser(description="VPN Deploy Script with DigitalOcean")
     
@@ -32,7 +27,7 @@ def main():
 
     droplets.create_droplet(args.ip, args.name, args.region, args.email)
     time.sleep(10)
-    droplets.get_droplet_ip(args.name)
+    droplet_ip = droplets.get_droplet_ip(args.name)
 
     # TODO - Use something else instead of a while loop to check the actual progress.
     # can we move it into the class and check the progress on a class method easier?
