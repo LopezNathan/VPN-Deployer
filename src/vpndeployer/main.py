@@ -1,5 +1,10 @@
 import argparse
 
+
+## TODO
+# droplet_ip variable broken?
+# email, vpn, region arguments being ignored.
+
 def create_parser():
     parser = argparse.ArgumentParser(description="VPN Deploy Script with DigitalOcean")
     
