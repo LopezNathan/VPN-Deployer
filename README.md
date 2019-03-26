@@ -7,15 +7,22 @@ Once OpenVPN has been installed, NGINX is installed and a link is provided to do
 
 **This is only intended for short-term/one-time use, as currently no major security protection is added to the base server.**
 
-#### Todo
+## Installation
 
-- Improve Link Download - [Issue #1](https://github.com/LopezNathan/vpn-deployer/issues/1)
-- Add Sever Security for Long-term Use - [Issue #2](https://github.com/LopezNathan/vpn-deployer/issues/2)
+This package requires Python 3.7
+
+```bash
+$ pip3 install git+https://github.com/LopezNathan/vpn-deployer
+```
+
+You will now have access to the `vpndeployer` command.
 
 ## Usage
 
 ```bash
-usage: vpn-deploy.py [-h] [--email EMAIL] [--name NAME] [--region REGION] ip
+$ vpndeployer --help
+
+usage: vpndeployer [-h] [--email EMAIL] [--name NAME] [--region REGION] ip
 
 VPN Deploy Script with DigitalOcean
 
@@ -31,21 +38,12 @@ optional arguments:
 
 ### Example
 
-> python vpn-deploy.py 123.123.123.123
+> vpndeployer 123.123.123.123
 
 - You will be prompted for your [DigitalOcean API Token](https://www.digitalocean.com/docs/api/create-personal-access-token/). This is only passed through `getpass` to the DigitalOcean API during the creation of the droplet and obtaining the droplet IP.
 - Your IP Address is needed to restrict port `80` for the OpenVPN download link.
 
 Once the installer script has completed, it will output the OpenVPN download link. This link automatically expires in 5 minutes.
-
-## Dependencies
-
-- Python 3
-
-### Python Modules
-
-- [requests](https://github.com/kennethreitz/requests)
-- [digitalocean](https://github.com/koalalorenzo/python-digitalocean)
 
 ## Legacy Deploy Options
 
