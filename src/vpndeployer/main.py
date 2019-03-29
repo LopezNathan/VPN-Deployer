@@ -17,7 +17,6 @@ def main():
     import getpass
     import time
     import requests
-    import subprocess
     from vpndeployer import droplets
 
     args = create_parser().parse_args()
@@ -26,8 +25,8 @@ def main():
     droplets.api_authentication(DO_API_TOKEN)
 
     if args.ip is None:
-        args.ip = subprocess.check_output(['curl', '--silent', 'ifconfig.co'])
-        args.ip = args.ip.decode().strip('\n')
+        args.ip = requests.get("https://ifconfig.co/ip")
+        args.ip = args.ip.text.strip('\n')
 
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
