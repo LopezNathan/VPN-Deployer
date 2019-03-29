@@ -2,9 +2,13 @@
 import requests
 import digitalocean
 
+# TODO - Move this to method in __init__.py
+
 
 def api_authentication(DO_API_TOKEN):
     api_authentication.DO_API_TOKEN = DO_API_TOKEN
+
+# TODO - Add timestamp to "name"
 
 
 def create_droplet(ip, name=None, region=None, email=None):
@@ -22,16 +26,13 @@ def create_droplet(ip, name=None, region=None, email=None):
     fi
     curl -o /root/openvpn-install-prep.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install-prep.sh
     chmod +x /root/openvpn-install-prep.sh && bash /root/openvpn-install-prep.sh""",
-        )
+    )
 
     return droplet.create()
 
 
 def get_droplet_ip(name):
     droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % api_authentication.DO_API_TOKEN, "Content-Type": "application/json"})
-    # TODO - Clean this mess up...
-    # TODO - we should be returning something here
-    # TODO - what happens if we have multiple droplets with same name?...
     for item in droplet_list.json()['droplets']:
         if item['name'] == name:
             droplet_vpn = item

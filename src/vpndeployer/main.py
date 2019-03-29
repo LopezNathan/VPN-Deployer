@@ -22,7 +22,6 @@ def main():
 
     args = create_parser().parse_args()
 
-    # TODO - check api token auth before proceeding
     DO_API_TOKEN = getpass.getpass('DigitalOcean API Token: ')
     droplets.api_authentication(DO_API_TOKEN)
 
@@ -37,8 +36,7 @@ def main():
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(args.name)
 
-    # TODO - Use something else instead of a while loop to check the actual progress.
-    # can we move it into the class and check the progress on a class method easier?
+    # TODO - Use tenacity
     while True:
         try:
             check_deploy = requests.get(f"http://{droplet_ip}/client.ovpn")
