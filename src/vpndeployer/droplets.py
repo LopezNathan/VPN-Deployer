@@ -7,9 +7,7 @@ import digitalocean
 
 def api_authentication(DO_API_TOKEN):
     api_authentication.DO_API_TOKEN = DO_API_TOKEN
-
-# TODO - Add timestamp to "name"
-
+    
 
 def create_droplet(ip, name, region, email):
     droplet = digitalocean.Droplet(

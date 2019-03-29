@@ -28,6 +28,9 @@ def main():
         args.ip = requests.get("https://ifconfig.co/ip")
         args.ip = args.ip.text.strip('\n')
 
+    if args.name == "VPN":
+        args.name = args.name + "-" + str(time.time())
+
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
 
