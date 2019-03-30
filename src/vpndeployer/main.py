@@ -34,7 +34,7 @@ def main():
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
 
-    droplets.create_droplet(args.ip, args.name, args.region, args.email)
+    droplets.create_droplet(ip=args.ip, name=args.name, region=args.region, email=args.email)
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(args.name)
 
