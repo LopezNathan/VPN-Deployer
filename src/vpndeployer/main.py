@@ -2,7 +2,7 @@
 import argparse
 
 
-def create_parser():
+def parse_args():
     parser = argparse.ArgumentParser(description="VPN Deploy Script with DigitalOcean")
 
     parser.add_argument("--ip", dest="ip", help="Your IP Address")
@@ -10,7 +10,7 @@ def create_parser():
     parser.add_argument("--name", default='VPN', dest="name", help="Droplet Name")
     parser.add_argument("--region", default='nyc1', dest="region", help="Droplet Region")
 
-    return parser
+    return parser.parse_args()
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     import requests
     from vpndeployer import droplets
 
-    args = create_parser().parse_args()
+    args = parse_args()
 
     DO_API_TOKEN = getpass.getpass('DigitalOcean API Token: ')
     droplets.api_authentication(DO_API_TOKEN)
