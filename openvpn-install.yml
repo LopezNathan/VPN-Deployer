@@ -1,0 +1,36 @@
+---
+- name: OpenVPN Install
+  hosts: localhost
+
+  tasks:
+
+  - name: Install EPEL
+    yum:
+      name: epel-release
+      state: present
+
+  - name: Install NGINX
+    yum:
+      name: nginx
+      state: present
+
+  - name: Start NGiNX
+    service:
+      name: nginx
+      state: started
+
+  - name: Download OpenVPN Installer
+    get_url:
+      url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install.sh
+      dest: /root/openvpn-install.sh
+      mode: 0755
+
+  - name: Run OpenVPN Installer
+    environment:
+      AUTO_INSTALL: y
+    script: /root/openvpn-install.sh
+
+  - name: Copy OpenVPN Config to NGINX Path
+    copy:
+      src: /root/client.ovpn
+      dest: /usr/share/nginx/html/client.ovpn
