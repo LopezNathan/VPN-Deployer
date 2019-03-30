@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='vpndeployer',
-    version='1.0.0',
+    version='1.0.1',
     author='Nathan Lopez',
     author_email='contact@lopeznathan.com',
     description='Fully Install OpenVPN on DigitalOcean Automatically',

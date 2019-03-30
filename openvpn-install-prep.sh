@@ -10,7 +10,7 @@ yum -y install yum-plugin-security
 yum --security update
 
 # Download & Run OpenVPN Installer
-curl -o /root/openvpn-install.sh  https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/openvpn-install.sh
+curl -o /root/openvpn-install.sh  https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install.sh
 chmod +x /root/openvpn-install.sh
 export AUTO_INSTALL=y
 bash /root/openvpn-install.sh
