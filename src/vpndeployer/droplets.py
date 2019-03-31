@@ -2,16 +2,10 @@
 import requests
 import digitalocean
 
-# TODO - Move this to method in __init__.py
 
-
-def api_authentication(DO_API_TOKEN):
-    api_authentication.DO_API_TOKEN = DO_API_TOKEN
-
-
-def create_droplet(ip, name, region, email):
+def create_droplet(api_token, ip, name, region, email):
     droplet = digitalocean.Droplet(
-        token=f'{api_authentication.DO_API_TOKEN}',
+        token=f'{api_token}',
         name=f'{name}',
         region=f'{region}',
         image='centos-7-x64',
@@ -25,8 +19,8 @@ def create_droplet(ip, name, region, email):
     return droplet.create()
 
 
-def get_droplet_ip(name):
-    droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % api_authentication.DO_API_TOKEN, "Content-Type": "application/json"})
+def get_droplet_ip(name, api_token):
+    droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % api_token, "Content-Type": "application/json"})
     for item in droplet_list.json()['droplets']:
         if item['name'] == name:
             droplet_vpn = item
