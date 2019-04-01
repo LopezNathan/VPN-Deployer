@@ -22,15 +22,14 @@ You will now have access to the `vpndeployer` command.
 ```bash
 $ vpndeployer --help
 
-usage: vpndeployer [-h] [--email EMAIL] [--name NAME] [--region REGION] ip
+usage: vpndeployer [-h] [--ip IP] [--email EMAIL] [--name NAME]
+                   [--region REGION]
 
 VPN Deploy Script with DigitalOcean
 
-positional arguments:
-  ip               Your IP Address
-
 optional arguments:
   -h, --help       show this help message and exit
+  --ip IP          Your IP Address
   --email EMAIL    Email Address for OpenVPN download link
   --name NAME      Droplet Name
   --region REGION  Droplet Region
@@ -38,10 +37,9 @@ optional arguments:
 
 ### Example
 
-> vpndeployer 123.123.123.123
+> vpndeployer
 
 - You will be prompted for your [DigitalOcean API Token](https://www.digitalocean.com/docs/api/create-personal-access-token/). This is only passed through `getpass` to the DigitalOcean API during the creation of the droplet and obtaining the droplet IP.
-- Your IP Address is needed to restrict port `80` for the OpenVPN download link.
 
 Once the installer script has completed, it will output the OpenVPN download link. This link automatically expires in 5 minutes.
 
