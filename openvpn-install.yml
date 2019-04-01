@@ -34,6 +34,10 @@
       name: sendmail
       state: started
     when: EMAIL != "None"
+  
+  - name: Add Email Content
+    shell: IP=$(hostname -I | cut -d' ' -f1); echo -e 'Subject:'' VPN Client Download'"\n"'Download Link:'" http://$IP/client.ovpn" >> email.txt
+    when: EMAIL != "None"
 
 # iptables -A INPUT -p tcp --dport 8000 -s 1.2.3.4 -j ACCEPT
   - iptables:
@@ -69,6 +73,5 @@
       dest: /usr/share/nginx/html/client.ovpn
     
   - name: Send Email About File Download
-    shell: IP=$(hostname -I | cut -d' ' -f1); echo -e 'Subject:'' VPN Client Download'"\n"'Download Link:'" http://$IP/client.ovpn" >> email.txt
     shell: sendmail "{{ EMAIL }}" < /root/email.txt
     when: EMAIL != "None"
