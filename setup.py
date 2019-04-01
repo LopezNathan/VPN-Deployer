@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 from setuptools import find_packages, setup
+from os import path
+
+with open(path.join('src/vpndeployer/', '__version__')) as version_file:
+    version = version_file.read().strip()
 
 setup(
     name='vpndeployer',
-    version='1.1.0',
+    version=version,
     author='Nathan Lopez',
     author_email='contact@lopeznathan.com',
     description='Fully Install OpenVPN on DigitalOcean Automatically',
