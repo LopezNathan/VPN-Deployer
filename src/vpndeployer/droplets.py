@@ -13,7 +13,7 @@ def create_droplet(api_token, ip, name, region, email):
         user_data=f"""#!/bin/bash
     yum -y install ansible
     curl -o /root/openvpn-install.yml https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/openvpn-install.yml
-    ansible-playbook /root/openvpn-install.yml --extra-vars "IP={ip} EMAIL={email}" > /var/log/ansible.log 2>&1"
+    ansible-playbook /root/openvpn-install.yml --extra-vars "IP={ip} EMAIL={email}" > /var/log/ansible.log 2>&1
     """,
     )
 
