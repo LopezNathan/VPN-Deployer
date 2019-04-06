@@ -1,0 +1,25 @@
+---
+- name: OpenVPN Install Cleanup
+  hosts: localhost
+
+  tasks:
+
+  - name: Ensure NGINX is Absent
+    yum:
+      name: nginx
+      state: absent
+
+  - name: Ensure Sendmail is Absent
+    yum:
+      name: sendmail
+      state: absent
+
+  - name: Ensure Configuration Files Are Absent
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+      - /usr/share/nginx/html/client.ovpn
+      - /root/openvpn-install.sh
+      - /root/client.ovpn 
+      - /root/email.txt
