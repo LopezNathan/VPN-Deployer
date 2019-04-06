@@ -28,7 +28,7 @@ def main():
         DO_API_TOKEN = os.environ.get('DO_API_TOKEN')
     else:
         DO_API_TOKEN = getpass.getpass('DigitalOcean API Token: ')
-        DO_API_TOKEN = auth.ApiAuth(DO_API_TOKEN).get_api_token()
+    DO_API_TOKEN = auth.ApiAuth(DO_API_TOKEN).get_api_token()
 
     if args.ip is None:
         args.ip = requests.get("https://ipv4.icanhazip.com")
