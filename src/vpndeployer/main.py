@@ -18,14 +18,14 @@ def main():
     import requests
     import getpass
     import tenacity
-    from vpndeployer import ApiAuth
+    from vpndeployer import auth
     from vpndeployer import droplets
 
     args = parse_args()
 
     # TODO - Check for environment variable prior to prompt
     DO_API_TOKEN = getpass.getpass('DigitalOcean API Token: ')
-    DO_API_TOKEN = ApiAuth(DO_API_TOKEN).get_api_token()
+    DO_API_TOKEN = auth.ApiAuth(DO_API_TOKEN).get_api_token()
 
     if args.ip is None:
         args.ip = requests.get("https://ipv4.icanhazip.com")
