@@ -56,16 +56,23 @@
       jump: DROP
     become: yes
 
+  - name: Check if OpenVPN Exists
+    stat: 
+      path: /usr/sbin/openvpn
+    register: openvpn_status
+
   - name: Download OpenVPN Installer
     get_url:
       url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install.sh
       dest: /root/openvpn-install.sh
       mode: 0755
+    when: openvpn_status.stat.exists == False
 
   - name: Run OpenVPN Installer
     environment:
       AUTO_INSTALL: y
     script: /root/openvpn-install.sh
+    when: openvpn_status.stat.exists == False
 
   - name: Copy OpenVPN Config to NGINX Path
     copy:
