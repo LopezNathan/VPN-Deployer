@@ -14,10 +14,10 @@ def parse_args():
 
 
 def main():
-    # import getpass
     import time
     import requests
     import getpass
+    import tenacity
     from vpndeployer import ApiAuth
     from vpndeployer import droplets
 
@@ -40,12 +40,9 @@ def main():
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(name=args.name, api_token=DO_API_TOKEN)
 
-    # TODO - Use tenacity
-    while True:
-        try:
-            check_deploy = requests.get(f"http://{droplet_ip}/client.ovpn")
-            print(f"\nDeploy Completed!\nDownload OpenVPN File: http://{droplet_ip}/client.ovpn")
-            break
-        except:
-            print("Deploy In-Progress...")
-            time.sleep(60)
+    @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_incrementing(20))
+    def check_deploy(droplet_ip):
+        requests.get(f"http://{droplet_ip}/client.ovpn")
+        print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
+
+    check_deploy(droplet_ip=droplet_ip)
