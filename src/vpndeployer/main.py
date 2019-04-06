@@ -23,6 +23,7 @@ def main():
 
     args = parse_args()
 
+    # TODO - Check for environment variable prior to prompt
     DO_API_TOKEN = getpass.getpass('DigitalOcean API Token: ')
     DO_API_TOKEN = ApiAuth(DO_API_TOKEN).get_api_token()
 
