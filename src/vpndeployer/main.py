@@ -27,7 +27,7 @@ def main():
     DO_API_TOKEN = ApiAuth(DO_API_TOKEN).get_api_token()
 
     if args.ip is None:
-        args.ip = requests.get("https://ifconfig.co/ip")
+        args.ip = requests.get("https://ipv4.icanhazip.com")
         args.ip = args.ip.text.strip('\n')
 
     if args.name == "VPN":
