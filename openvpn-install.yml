@@ -8,38 +8,37 @@
 
   tasks:
 
-  - name: Install EPEL
+  - name: Ensure EPEL is Present
     yum:
       name: epel-release
       state: present
 
-  - name: Install NGINX
+  - name: Ensure NGINX is Present
     yum:
       name: nginx
       state: present
 
-  - name: Start NGINX
+  - name: Ensure NGINX is Started
     service:
       name: nginx
       state: started
 
-  - name: Install Sendmail if EMAIL Provided
+  - name: Ensure Sendmail is Present (if EMAIL Variable provided)
     yum:
       name: sendmail
       state: present
     when: EMAIL != "None"
 
-  - name: Start Sendmail
+  - name: Ensure Sendmail is Started (if EMAIL Variable provided)
     service:
       name: sendmail
       state: started
     when: EMAIL != "None"
   
   - name: Add Email Content
-    shell: IP=$(hostname -I | cut -d' ' -f1); echo -e 'Subject:'' VPN Client Download'"\n"'Download Link:'" http://$IP/client.ovpn" >> email.txt
+    shell: IP=$(hostname -I | cut -d' ' -f1); echo -e 'Subject:'' VPN Client Download'"\n"'Download Link:'" http://$IP/client.ovpn" > /root/email.txt
     when: EMAIL != "None"
 
-# iptables -A INPUT -p tcp --dport 8000 -s 1.2.3.4 -j ACCEPT
   - iptables:
       chain: INPUT
       protocol: tcp
@@ -48,7 +47,6 @@
       jump: ACCEPT
     become: yes
 
-# iptables -A INPUT -p tcp --dport 80 -j DROP
   - iptables:
       chain: INPUT
       protocol: tcp
