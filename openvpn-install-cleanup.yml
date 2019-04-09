@@ -5,12 +5,12 @@
   tasks:
 
   - name: Ensure NGINX is Absent
-    yum:
+    package:
       name: nginx
       state: absent
 
   - name: Ensure Sendmail is Absent
-    yum:
+    package:
       name: sendmail
       state: absent
 
@@ -20,6 +20,7 @@
       state: absent
     with_items:
       - /usr/share/nginx/html/client.ovpn
+      - /var/www/html/client.ovpn
       - /root/openvpn-install.sh
       - /root/client.ovpn 
       - /root/email.txt

@@ -12,9 +12,10 @@
     yum:
       name: epel-release
       state: present
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
   - name: Ensure NGINX is Present
-    yum:
+    package:
       name: nginx
       state: present
 
@@ -24,7 +25,7 @@
       state: started
 
   - name: Ensure Sendmail is Present (if EMAIL Variable provided)
-    yum:
+    package:
       name: sendmail
       state: present
     when: EMAIL != "None"
@@ -76,6 +77,13 @@
     copy:
       src: /root/client.ovpn
       dest: /usr/share/nginx/html/client.ovpn
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: Copy OpenVPN Config to NGINX Path
+    copy:
+      src: /root/client.ovpn
+      dest: /var/www/html/client.ovpn
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
     
   - name: Send Email About File Download
     shell: sendmail "{{ EMAIL }}" < /root/email.txt
