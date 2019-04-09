@@ -33,6 +33,8 @@ def get_droplet_ip(name, api_token):
             droplet_vpn = item
 
     for item in droplet_vpn['networks']['v4']:
+        # TODO - Grab first IP from json array without a break
         droplet_ip = item['ip_address']
+        break
 
     return droplet_ip
