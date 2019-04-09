@@ -9,6 +9,10 @@ def parse_args():
     parser.add_argument("--email", dest="email", help="Email Address for OpenVPN download link")
     parser.add_argument("--name", default='VPN', dest="name", help="Droplet Name")
     parser.add_argument("--region", default='nyc1', dest="region", help="Droplet Region")
+    parser.add_argument("--image", default='centos-7-x64', dest="image",
+                                                                help="Droplet Distribution Image (centos-6-x64 centos-6-x32 \
+                                                                fedora-27-x64 fedora-28-x64 fedora-28-x64-atomic \
+                                                                ubuntu-18-10-x64 ubuntu-14-04-x64 ubuntu-14-04-x32)")
 
     return parser.parse_args()
 
@@ -40,7 +44,7 @@ def main():
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
 
-    droplets.create_droplet(ip=args.ip, name=args.name, region=args.region, email=args.email, api_token=DO_API_TOKEN)
+    droplets.create_droplet(ip=args.ip, name=args.name, region=args.region, image=args.image, email=args.email, api_token=DO_API_TOKEN)
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(name=args.name, api_token=DO_API_TOKEN)
 

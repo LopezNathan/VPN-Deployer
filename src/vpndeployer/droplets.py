@@ -3,12 +3,12 @@ import requests
 import digitalocean
 
 
-def create_droplet(api_token, ip, name, region, email):
+def create_droplet(api_token, ip, name, region, image, email):
     droplet = digitalocean.Droplet(
         token=f'{api_token}',
         name=f'{name}',
         region=f'{region}',
-        image='centos-7-x64',
+        image=f'{image}',
         size_slug='512mb',
         user_data=f"""#!/bin/bash
     yum -y install ansible
