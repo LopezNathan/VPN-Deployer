@@ -12,7 +12,7 @@
     yum:
       name: epel-release
       state: present
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
   - name: Ensure NGINX is Present
     package:
