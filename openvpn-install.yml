@@ -70,6 +70,7 @@
   - name: Run OpenVPN Installer
     environment:
       AUTO_INSTALL: y
+      CONTINUE: y
     script: /root/openvpn-install.sh
     when: openvpn_status.stat.exists == False
 
