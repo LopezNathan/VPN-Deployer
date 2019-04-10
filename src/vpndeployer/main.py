@@ -48,9 +48,13 @@ def main():
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(name=args.name, api_token=DO_API_TOKEN)
 
-    @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20))
+    @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20), retry=tenacity.retry_if_exception_type(IOError))
     def check_deploy(droplet_ip):
-        requests.get(f"http://{droplet_ip}/client.ovpn")
-        print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
+        response = requests.get(f"http://{droplet_ip}/client.ovpn")
+        if response.status_code is not 200:
+            raise IOError("Download File Unreachable!")
+        else:
+            print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
+
 
     check_deploy(droplet_ip=droplet_ip)
