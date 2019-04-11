@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 class ApiAuth:
 
     def __init__(self, API_TOKEN):
