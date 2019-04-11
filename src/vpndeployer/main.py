@@ -9,10 +9,9 @@ def parse_args():
     parser.add_argument("--email", dest="email", help="Email Address for OpenVPN download link")
     parser.add_argument("--name", default='VPN', dest="name", help="Droplet Name")
     parser.add_argument("--region", default='nyc1', dest="region", help="Droplet Region")
-    parser.add_argument("--image", default='ubuntu-18-10-x64', dest="image",
-                                                                help="Droplet Distribution Image \
-                                                                (centos-7-x64 fedora-27-x64 fedora-28-x64 \
-                                                                ubuntu-18-10-x64 ubuntu-14-04-x64)")
+    parser.add_argument("--image", default='ubuntu-18-10-x64', dest="image", help="Droplet Distribution Image \
+                                                                                (centos-7-x64 fedora-27-x64 fedora-28-x64 \
+                                                                                ubuntu-18-10-x64 ubuntu-14-04-x64)")
 
     return parser.parse_args()
 
@@ -51,10 +50,9 @@ def main():
     @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20), retry=tenacity.retry_if_exception_type(IOError))
     def check_deploy(droplet_ip):
         response = requests.get(f"http://{droplet_ip}/client.ovpn")
-        if response.status_code is not 200:
+        if response.status_code == 200:
             raise IOError("Download File Unreachable!")
         else:
             print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
-
 
     check_deploy(droplet_ip=droplet_ip)
