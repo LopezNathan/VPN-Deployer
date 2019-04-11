@@ -1,0 +1,91 @@
+---
+- name: OpenVPN Install
+  hosts: localhost
+
+  vars:
+    IP: "{{ IP }}"
+    EMAIL: "{{ EMAIL }}"
+
+  tasks:
+
+  - name: Ensure EPEL is Present
+    yum:
+      name: epel-release
+      state: present
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: Ensure NGINX is Present
+    package:
+      name: nginx
+      state: present
+
+  - name: Ensure NGINX is Started
+    service:
+      name: nginx
+      state: started
+
+  - name: Ensure Sendmail is Present (if EMAIL Variable provided)
+    package:
+      name: sendmail
+      state: present
+    when: EMAIL != "None"
+
+  - name: Ensure Sendmail is Started (if EMAIL Variable provided)
+    service:
+      name: sendmail
+      state: started
+    when: EMAIL != "None"
+  
+  - name: Add Email Content
+    shell: IP=$(hostname -I | cut -d' ' -f1); echo -e 'Subject:'' VPN Client Download'"\n"'Download Link:'" http://$IP/client.ovpn" > /root/email.txt
+    when: EMAIL != "None"
+
+  - iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: 80
+      source: "{{ IP }}"
+      jump: ACCEPT
+    become: yes
+
+  - iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: 80
+      jump: DROP
+    become: yes
+
+  - name: Check if OpenVPN Exists
+    stat: 
+      path: /usr/sbin/openvpn
+    register: openvpn_status
+
+  - name: Download OpenVPN Installer
+    get_url:
+      url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install.sh
+      dest: /root/openvpn-install.sh
+      mode: 0755
+    when: openvpn_status.stat.exists == False
+
+  - name: Run OpenVPN Installer
+    environment:
+      AUTO_INSTALL: y
+      CONTINUE: y
+    script: /root/openvpn-install.sh
+    when: openvpn_status.stat.exists == False
+
+  - name: Copy OpenVPN Config to NGINX Path
+    copy:
+      src: /root/client.ovpn
+      dest: /usr/share/nginx/html/client.ovpn
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: Copy OpenVPN Config to NGINX Path
+    copy:
+      src: /root/client.ovpn
+      dest: /var/www/html/client.ovpn
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    
+  - name: Send Email About File Download
+    shell: sendmail "{{ EMAIL }}" < /root/email.txt
+    when: EMAIL != "None"
