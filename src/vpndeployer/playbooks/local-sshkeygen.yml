@@ -6,4 +6,4 @@
 
   - name:
     openssh_keypair:
-        path: /tmp/VPN-Test
+        path: /tmp/.VPN-Deployer
