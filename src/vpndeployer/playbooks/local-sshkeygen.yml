@@ -1,0 +1,9 @@
+---
+- name: Local Environment SSH Key Generation
+  hosts: localhost
+
+  tasks:
+
+  - name:
+    openssh_keypair:
+        path: /tmp/.VPN-Deployer

@@ -8,6 +8,7 @@ def parse_args():
     parser.add_argument("--ip", dest="ip", help="Your IP Address")
     parser.add_argument("--email", dest="email", help="Email Address for OpenVPN download link")
     parser.add_argument("--name", default='VPN', dest="name", help="Droplet Name")
+    parser.add_argument("--ssh-key", dest="ssh_key", help="SSH Key File for Droplet (Absolute Path)")
     parser.add_argument("--region", default='nyc1', dest="region", help="Droplet Region")
     parser.add_argument("--image", default='ubuntu-18-10-x64', dest="image", help="Droplet Distribution Image \
                                                                                 (centos-7-x64 fedora-27-x64 fedora-28-x64 \
@@ -24,6 +25,7 @@ def main():
     import os
     from vpndeployer import auth
     from vpndeployer import droplets
+    from vpndeployer import ansible
 
     args = parse_args()
 
@@ -39,6 +41,20 @@ def main():
 
     if args.name == "VPN":
         args.name = args.name + "-" + str(time.time())
+
+    if args.ssh_key is None:
+        existing_key = os.path.isfile('/tmp/.VPN-Deployer')
+        if existing_key is False:
+            args.ssh_key = ansible.gen_sshkey()
+    else:
+        with open(args.ssh_key, 'r') as file:
+            key_contents = file.read()
+            file.close
+
+        with open(ansible.playbook_path() + "/env/ssh_key", "w+") as file:
+            file.writelines(key_contents)
+            os.chmod(str(file.name), 0o600)
+            file.close
 
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
