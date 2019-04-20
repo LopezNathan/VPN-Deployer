@@ -38,3 +38,11 @@ def get_droplet_ip(name, api_token):
         break
 
     return droplet_ip
+
+def add_sshkey(api_token):
+    public_key = open('/tmp/.VPN-Deployer.pub').read()
+    addkey = digitalocean.SSHKey(token=api_token,
+                            name='VPN-Deployer',
+                            public_key=public_key)
+
+    return addkey.create()
