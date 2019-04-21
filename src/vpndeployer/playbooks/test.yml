@@ -1,8 +1,0 @@
----
-- name: "Test"
-  hosts: localhost
-
-  tasks:
-
-  - name: Start Mysql Service
-    command: "abc echo hi"
