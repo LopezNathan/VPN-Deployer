@@ -44,12 +44,14 @@ def main():
     existing_key = os.path.isfile('/tmp/.VPN-Deployer')
     if existing_key is False:
         ansible.gen_sshkey()
-        sshkey = droplets.add_sshkey(DO_API_TOKEN)
+        droplets.add_sshkey(DO_API_TOKEN)
+        sshkey = droplets.get_sshkey_fingerprint(DO_API_TOKEN)
 
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
 
-    droplets.create_droplet(ip=args.ip, name=args.name, region=args.region, image=args.image, email=args.email, api_token=DO_API_TOKEN)
+    sshkey = droplets.get_sshkey_fingerprint(DO_API_TOKEN)
+    droplets.create_droplet(ip=args.ip, name=args.name, region=args.region, image=args.image, email=args.email, sshkey=sshkey, api_token=DO_API_TOKEN)
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(name=args.name, api_token=DO_API_TOKEN)
 
