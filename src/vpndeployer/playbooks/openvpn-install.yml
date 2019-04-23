@@ -1,6 +1,6 @@
 ---
 - name: OpenVPN Install
-  hosts: localhost
+  hosts: droplets
 
   vars:
     IP: "{{ IP }}"
