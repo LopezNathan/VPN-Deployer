@@ -17,12 +17,10 @@ def gen_sshkey():
 
     with open('/tmp/.VPN-Deployer', 'r') as file:
         sshkey = file.read()
-        file.close
 
     with open(data_path + "/env/ssh_key", "w+") as file:
         file.writelines(sshkey)
         os.chmod(str(file.name), 0o600)
-        file.close
 
     # TODO - Return something proper, the key?
     return runner.status
