@@ -54,6 +54,8 @@ def main():
     droplets.create_droplet(ip=args.ip, name=args.name, region=args.region, image=args.image, email=args.email, sshkey=sshkey, api_token=DO_API_TOKEN)
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(name=args.name, api_token=DO_API_TOKEN)
+    ansible.inventory_ip_update(ip_address=droplet_ip)
+    ansible.deploy_openvpn(ip=args.ip, email=args.email)
 
     @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20), retry=tenacity.retry_if_exception_type(IOError))
     def check_deploy(droplet_ip):

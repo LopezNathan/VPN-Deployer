@@ -15,13 +15,11 @@ def create_droplet(api_token, ip, name, region, image, email, sshkey):
         user_data=f"""#!/bin/bash
     if [[ -e /etc/debian_version ]]; then
         apt-get -y update
-        apt-get -y install ansible
+        apt-get -y install python3-minimal
     else
         yum -y update
-        yum -y install ansible
+        yum -y install python3-minimal
     fi
-    curl -o /root/openvpn-install.yml https://raw.githubusercontent.com/LopezNathan/vpn-deployer/development/openvpn-install.yml
-    ansible-playbook /root/openvpn-install.yml --extra-vars "IP={ip} EMAIL={email}" > /var/log/ansible.log 2>&1
     """,
     )
 
