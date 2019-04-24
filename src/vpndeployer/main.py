@@ -17,6 +17,7 @@ def parse_args():
 
 
 def main():
+    import time
     import requests
     import getpass
     import tenacity
