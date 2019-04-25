@@ -54,13 +54,20 @@ def main():
     droplets.create_droplet(ip=args.ip, name=args.name, region=args.region, image=args.image, email=args.email, sshkey=sshkey, api_token=DO_API_TOKEN)
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(name=args.name, api_token=DO_API_TOKEN)
+    ansible.inventory_ip_update(ip_address=droplet_ip)
+    # TODO - Temporary fix to deploy occurring before droplet SSH connection is ready
+    time.sleep(30)
+    ansible.deploy_openvpn(ip=args.ip, email=args.email)
 
-    @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20), retry=tenacity.retry_if_exception_type(IOError))
-    def check_deploy(droplet_ip):
-        response = requests.get(f"http://{droplet_ip}/client.ovpn")
-        if response.status_code == 200:
-            raise IOError("Download File Unreachable!")
-        else:
-            print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
+    # TODO - Add proper checking into the deploy, tenacity (below) should no longer be needed though.
+    print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
 
-    check_deploy(droplet_ip=droplet_ip)
+    # @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20), retry=tenacity.retry_if_exception_type(IOError))
+    # def check_deploy(droplet_ip):
+    #     response = requests.get(f"http://{droplet_ip}/client.ovpn")
+    #     if response.status_code == 200:
+    #         raise IOError("Download File Unreachable!")
+    #     else:
+    #         print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
+
+    # check_deploy(droplet_ip=droplet_ip)

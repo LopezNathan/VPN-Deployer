@@ -1,7 +1,4 @@
 localhost ansible_connection=local
 
-[droplets:vars]
-ansible_user=root
-
 [droplets]
-droplet1 ansible_host=104.248.191.193
+droplet1 ansible_host=root@IP

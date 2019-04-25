@@ -1,12 +1,24 @@
 ---
 - name: OpenVPN Install
-  hosts: localhost
+  hosts: droplets
 
   vars:
     IP: "{{ IP }}"
     EMAIL: "{{ EMAIL }}"
 
   tasks:
+
+  - name: Ensure YUM Packages are Latest Version
+    yum:
+      name: "*"
+      state: latest
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: Ensure APT Packages are Latest Version
+    apt:
+      name: "*"
+      state: latest
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: Ensure EPEL is Present
     yum:
@@ -60,30 +72,32 @@
       path: /usr/sbin/openvpn
     register: openvpn_status
 
-  - name: Download OpenVPN Installer
-    get_url:
-      url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install.sh
-      dest: /root/openvpn-install.sh
-      mode: 0755
-    when: openvpn_status.stat.exists == False
+  # - name: Download OpenVPN Installer
+  #   get_url:
+  #     url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install.sh
+  #     dest: /root/openvpn-install.sh
+  #     mode: 0755
+  #   when: openvpn_status.stat.exists == False
 
   - name: Run OpenVPN Installer
     environment:
       AUTO_INSTALL: y
       CONTINUE: y
-    script: /root/openvpn-install.sh
+    script: ./openvpn-install.sh
     when: openvpn_status.stat.exists == False
 
   - name: Copy OpenVPN Config to NGINX Path
     copy:
       src: /root/client.ovpn
       dest: /usr/share/nginx/html/client.ovpn
+      remote_src: yes
     when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
   - name: Copy OpenVPN Config to NGINX Path
     copy:
       src: /root/client.ovpn
       dest: /var/www/html/client.ovpn
+      remote_src: yes
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
     
   - name: Send Email About File Download
