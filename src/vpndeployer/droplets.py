@@ -14,11 +14,9 @@ def create_droplet(api_token, ip, name, region, image, email, sshkey):
         size_slug='512mb',
         user_data=f"""#!/bin/bash
     if [[ -e /etc/debian_version ]]; then
-        apt-get -y update
-        apt-get -y install python3-minimal
+        apt-get -y install python-minimal
     else
-        yum -y update
-        yum -y install python3-minimal
+        yum -y install python-minimal
     fi
     """,
     )
