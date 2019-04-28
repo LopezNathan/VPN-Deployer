@@ -35,17 +35,6 @@ def deploy_openvpn(ip, email):
 
 
 # TODO - Update this to be dynamic, this is a bad way of accomplishing this.
-def inventory_keypath_update():
-    data_path = playbook_path()
-
-    with open(data_path + '/inventory', 'r') as f:
-        data = f.read().replace('KEYPATH', data_path + '/env/ssh_key')
-
-    with open(data_path + '/inventory', 'w') as f:
-        f.write(data)
-
-
-# TODO - Update this to be dynamic, this is a bad way of accomplishing this.
 def inventory_ip_update(ip_address):
     data_path = playbook_path()
 
@@ -54,5 +43,3 @@ def inventory_ip_update(ip_address):
 
     with open(data_path + '/inventory', 'w') as f:
         f.write(data)
-
-    inventory_keypath_update()
