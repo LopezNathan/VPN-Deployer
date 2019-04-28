@@ -24,15 +24,18 @@ $ vpndeployer --help
 
 usage: vpndeployer [-h] [--ip IP] [--email EMAIL] [--name NAME]
                    [--region REGION]
+                   [--image {centos-7-x64,fedora-27-x64,fedora-28-x64,ubuntu-18-10-x64,ubuntu-14-04-x64}]
 
 VPN Deploy Script with DigitalOcean
 
 optional arguments:
-  -h, --help       show this help message and exit
-  --ip IP          Your IP Address
-  --email EMAIL    Email Address for OpenVPN download link
-  --name NAME      Droplet Name
-  --region REGION  Droplet Region
+  -h, --help            show this help message and exit
+  --ip IP               Your IP Address
+  --email EMAIL         Email Address for OpenVPN download link
+  --name NAME           Droplet Name
+  --region REGION       Droplet Region
+  --image {centos-7-x64,fedora-27-x64,fedora-28-x64,ubuntu-18-10-x64,ubuntu-14-04-x64}
+                        Droplet Distribution Image
 ```
 
 ### Example
@@ -56,7 +59,7 @@ Once the installer script has completed, it will output the OpenVPN download lin
   export EMAIL='EMAIL'
   export IP='IP'
   bash
-  curl -o /root/vpn-installer.sh https://raw.githubusercontent.com/LopezNathan/VPN-Deployer/master/OpenVPN-Deploy.sh
+  curl -o /root/vpn-installer.sh https://raw.githubusercontent.com/LopezNathan/vpn-deployer/archive/OpenVPN-Deploy.sh
   chmod +x /root/vpn-installer.sh && bash /root/vpn-installer.sh"}' \
         -H "Authorization: Bearer API-TOKEN" \
         -H "Content-Type: application/json"
@@ -74,7 +77,7 @@ Once the installer script has completed, it will output the OpenVPN download lin
   - Choose an image: CentOS
   - Choose a size: 512 MB
   - Choose a datacenter region: Any
-  - Select additional options: Check "User Data" & Paste the [Script](https://raw.githubusercontent.com/LopezNathan/VPN-Deployer/master/OpenVPN-Deploy.sh)
+  - Select additional options: Check "User Data" & Paste the [Script](https://raw.githubusercontent.com/LopezNathan/vpn-deployer/archive/OpenVPN-Deploy.sh)
   - Edit $IP & $EMAIL in the "User Data" Script
     - IP - Your local IP address
     - Email - Where the download link will be sent
