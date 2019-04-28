@@ -20,7 +20,6 @@ def main():
     import time
     import requests
     import getpass
-    import tenacity
     import os
     from vpndeployer import auth
     from vpndeployer import droplets
