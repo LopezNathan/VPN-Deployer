@@ -18,6 +18,9 @@ def gen_sshkey():
     with open('/tmp/.VPN-Deployer', 'r') as file:
         sshkey = file.read()
 
+    if not os.path.exists(data_path + "/env"):
+        os.makedirs(data_path + "/env")
+
     with open(data_path + "/env/ssh_key", "w+") as file:
         file.writelines(sshkey)
         os.chmod(str(file.name), 0o600)
