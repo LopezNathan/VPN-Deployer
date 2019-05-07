@@ -25,12 +25,20 @@
     yum:
       name: epel-release
       state: present
+    register: yum_status
+    until: yum_status is success
+    delay: 10
+    retries: 5
     when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
   - name: Ensure NGINX is Present
     package:
       name: nginx
       state: present
+    register: package_status
+    until: package_status is success
+    delay: 5
+    retries: 5
 
   - name: Ensure NGINX is Started
     service:
@@ -73,18 +81,18 @@
       path: /usr/sbin/openvpn
     register: openvpn_status
 
-  # - name: Download OpenVPN Installer
-  #   get_url:
-  #     url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/openvpn-install.sh
-  #     dest: /root/openvpn-install.sh
-  #     mode: 0755
-  #   when: openvpn_status.stat.exists == False
+  - name: Download OpenVPN Installer
+    get_url:
+      url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/src/vpndeployer/playbooks/openvpn-install.sh
+      dest: /root/openvpn-install.sh
+      mode: 0755
+    when: openvpn_status.stat.exists == False
 
   - name: Run OpenVPN Installer
     environment:
       AUTO_INSTALL: y
       CONTINUE: y
-    script: ./openvpn-install.sh
+    shell: /root/openvpn-install.sh
     when: openvpn_status.stat.exists == False
 
   - name: Copy OpenVPN Config to NGINX Path
