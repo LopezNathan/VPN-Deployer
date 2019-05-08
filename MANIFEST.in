@@ -1,0 +1,2 @@
+include src/vpndeployer/__version__
+recursive-include src/vpndeployer/playbooks *
