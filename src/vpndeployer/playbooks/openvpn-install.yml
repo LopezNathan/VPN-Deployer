@@ -9,6 +9,15 @@
 
   tasks:
 
+  # Temporary fix to prevent playbook failing due to existing apt processes.
+  # Open issue: https://github.com/ansible/ansible/issues/51663 & https://github.com/ansible/ansible/issues/25414
+  - name: Wait for automatic system updates
+    become: true
+    shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 1; done;
+    with_items:
+      - lock
+      - lock-frontend
+
   - name: Ensure YUM Packages are Latest Version
     yum:
       name: "*"
