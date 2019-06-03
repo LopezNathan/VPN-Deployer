@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 import argparse
+import time
+import requests
+import getpass
+import os
+from vpndeployer import auth, droplets, ansible
 
 
 def parse_args():
@@ -24,13 +29,6 @@ def parse_args():
 
 
 def main():
-    import time
-    import requests
-    import getpass
-    import os
-    from vpndeployer import auth
-    from vpndeployer import droplets
-    from vpndeployer import ansible
 
     args = parse_args()
 
