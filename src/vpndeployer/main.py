@@ -2,7 +2,6 @@
 import argparse
 import time
 import requests
-import getpass
 import os
 from vpndeployer import auth, droplets, ansible
 
@@ -32,12 +31,7 @@ def main():
 
     args = parse_args()
 
-    if os.environ.get('DO_API_TOKEN') is not None:
-        DO_API_TOKEN = os.environ.get('DO_API_TOKEN')
-    else:
-        DO_API_TOKEN = getpass.getpass('DigitalOcean API Token: ')
-    DO_API_TOKEN = auth.ApiAuth(DO_API_TOKEN).get_api_token()
-    os.environ['DO_API_TOKEN'] = DO_API_TOKEN
+    DO_API_TOKEN = auth.ApiAuth.get_api_token()
 
     if args.ip is None:
         args.ip = requests.get("https://ipv4.icanhazip.com")
