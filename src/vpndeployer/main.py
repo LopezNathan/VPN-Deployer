@@ -34,22 +34,19 @@ def main():
     DO_API_TOKEN = auth.ApiAuth.get_api_token()
 
     if args.ip is None:
-        args.ip = requests.get("https://ipv4.icanhazip.com")
-        args.ip = args.ip.text.strip('\n')
+        args.ip = requests.get("https://ipv4.icanhazip.com").text.strip('\n')
 
     if args.name == "VPN":
         args.name = args.name + "-" + str(time.time())
 
-    existing_key = os.path.isfile('/tmp/.VPN-Deployer')
-    if existing_key is False:
+    if os.path.isfile('/tmp/.VPN-Deployer') is False:
         ansible.gen_sshkey()
         droplets.add_sshkey(DO_API_TOKEN)
-        sshkey = droplets.get_sshkey_fingerprint(DO_API_TOKEN)
+    sshkey = droplets.get_sshkey_fingerprint(DO_API_TOKEN)
 
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
 
-    sshkey = droplets.get_sshkey_fingerprint(DO_API_TOKEN)
     droplets.create_droplet(ip=args.ip, name=args.name, region=args.region, image=args.image, email=args.email, sshkey=sshkey, api_token=DO_API_TOKEN)
     time.sleep(10)
     droplet_ip = droplets.get_droplet_ip(name=args.name, api_token=DO_API_TOKEN)
