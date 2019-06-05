@@ -13,7 +13,8 @@ def playbook_path():
 
 def gen_sshkey():
     data_path = playbook_path()
-    runner = ansible_runner.run(private_data_dir=data_path, playbook='local-sshkeygen.yml', host_pattern='localhost', quiet=True)
+    runner = ansible_runner.run(
+        private_data_dir=data_path, playbook='local-sshkeygen.yml', host_pattern='localhost', quiet=True)
 
     with open('/tmp/.VPN-Deployer', 'r') as file:
         sshkey = file.read()
@@ -31,7 +32,8 @@ def gen_sshkey():
 
 def deploy_openvpn(ip, email):
     data_path = playbook_path()
-    runner = ansible_runner.run(private_data_dir=data_path, playbook='openvpn-install.yml', host_pattern='VPN-*', extravars={"IP": ip, "EMAIL": email}, quiet=True)
+    runner = ansible_runner.run(private_data_dir=data_path, playbook='openvpn-install.yml',
+                                host_pattern='VPN-*', extravars={"IP": ip, "EMAIL": email}, quiet=True)
 
     # TODO - Return something proper, the key?
     return runner.status
