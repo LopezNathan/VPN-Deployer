@@ -2,7 +2,6 @@
 import argparse
 import time
 import requests
-import os
 from vpndeployer import auth, droplets, ansible
 
 
@@ -43,9 +42,7 @@ def main():
     if args.name == "VPN":
         args.name = args.name + "-" + str(time.time())
 
-    if os.path.isfile('/tmp/.VPN-Deployer') is False:
-        ansible.gen_sshkey()
-        droplets.add_sshkey(DO_API_TOKEN)
+    ansible.gen_sshkey(DO_API_TOKEN)
     sshkey = droplets.get_sshkey_fingerprint(DO_API_TOKEN)
 
     print("\nDeploy Started!")
