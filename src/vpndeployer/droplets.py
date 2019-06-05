@@ -25,7 +25,8 @@ def create_droplet(api_token, ip, name, region, image, email, sshkey):
 
 
 def get_droplet_ip(name, api_token):
-    droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={"Authorization": "Bearer %s" % api_token, "Content-Type": "application/json"})
+    droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={
+                                "Authorization": "Bearer %s" % api_token, "Content-Type": "application/json"})
     for item in droplet_list.json()['droplets']:
         if item['name'] == name:
             droplet_vpn = item
@@ -40,7 +41,8 @@ def get_droplet_ip(name, api_token):
 
 def add_sshkey(api_token):
     public_key = open('/tmp/.VPN-Deployer.pub').read()
-    addkey = digitalocean.SSHKey(token=api_token, name='VPN-Deployer', public_key=public_key)
+    addkey = digitalocean.SSHKey(
+        token=api_token, name='VPN-Deployer', public_key=public_key)
 
     return addkey.create()
 
