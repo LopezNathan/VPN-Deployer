@@ -16,7 +16,7 @@ setup(
     package_dir={'': 'src'},
     include_package_data=True,
     python_requires='>=3.6',
-    install_requires=['python-digitalocean', 'requests', 'tenacity', 'ansible==2.8.0a1', 'ansible-runner'],
+    install_requires=['python-digitalocean', 'requests', 'tenacity', 'ansible==2.8.0a1', 'ansible-runner', 'paramiko'],
     entry_points={
         'console_scripts': [
             'vpndeployer=vpndeployer.main:main'
