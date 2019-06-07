@@ -3,6 +3,15 @@ import requests
 import re
 import digitalocean
 from vpndeployer import ansible
+import tenacity
+
+
+class DropletNotFound(Exception):
+    """Droplet cannot be found."""
+
+
+class IPNotFound(Exception):
+    """Droplet Public IP cannot be found."""
 
 
 def create_droplet(api_token, ip, name, region, image, email, sshkey):
@@ -25,17 +34,23 @@ def create_droplet(api_token, ip, name, region, image, email, sshkey):
     return droplet.create()
 
 
+@tenacity.retry(stop=tenacity.stop_after_attempt(10), wait=tenacity.wait_fixed(2), reraise=True)
 def get_droplet_ip(name, api_token):
     droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={
                                 "Authorization": "Bearer %s" % api_token, "Content-Type": "application/json"})
     for item in droplet_list.json()['droplets']:
         if item['name'] == name:
             droplet_vpn = item
+            break
+    else:
+        raise DropletNotFound('Droplet Not Found')
 
     for item in droplet_vpn['networks']['v4']:
         # TODO - Grab first IP from json array without a break
         droplet_ip = item['ip_address']
         break
+    else:
+        raise IPNotFound('Droplet IP Not Found')
 
     return droplet_ip
 

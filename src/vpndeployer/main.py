@@ -50,11 +50,12 @@ def main():
 
     droplets.create_droplet(ip=args.ip, name=args.name, region=args.region,
                             image=args.image, email=args.email, sshkey=sshkey, api_token=DO_API_TOKEN)
-    time.sleep(10)
+
     droplet_ip = droplets.get_droplet_ip(
         name=args.name, api_token=DO_API_TOKEN)
+
     # TODO - Temporary fix to deploy occurring before droplet SSH connection is ready
-    time.sleep(30)
+    time.sleep(40)
     ansible.deploy_openvpn(ip=args.ip, email=args.email)
 
     # TODO - Add proper checking into the deploy, tenacity (below) should no longer be needed though.
