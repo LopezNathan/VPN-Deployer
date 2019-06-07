@@ -2,6 +2,7 @@
 import requests
 import re
 import digitalocean
+from vpndeployer import ansible
 
 
 def create_droplet(api_token, ip, name, region, image, email, sshkey):
@@ -40,7 +41,8 @@ def get_droplet_ip(name, api_token):
 
 
 def add_sshkey(api_token):
-    public_key = open('/tmp/.VPN-Deployer.pub').read()
+    data_path = ansible.playbook_path()
+    public_key = open(data_path + '/env/ssh_key.pub').read()
     addkey = digitalocean.SSHKey(
         token=api_token, name='VPN-Deployer', public_key=public_key)
 

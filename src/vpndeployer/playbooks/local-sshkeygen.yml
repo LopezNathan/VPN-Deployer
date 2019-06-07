@@ -2,8 +2,11 @@
 - name: Local Environment SSH Key Generation
   hosts: localhost
 
+  vars:
+    PATH: "{{ PATH }}"
+
   tasks:
 
   - name:
     openssh_keypair:
-        path: /tmp/.VPN-Deployer
+        path: "{{ PATH }}/env/ssh_key"
