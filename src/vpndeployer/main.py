@@ -42,8 +42,7 @@ def main():
     if args.name == "VPN":
         args.name = args.name + "-" + str(time.time())
 
-    ansible.gen_sshkey(DO_API_TOKEN)
-    sshkey = droplets.get_sshkey_fingerprint(DO_API_TOKEN)
+    sshkey = ansible.gen_sshkey(DO_API_TOKEN)
 
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")

@@ -16,14 +16,14 @@ def gen_sshkey(DO_API_TOKEN):
     data_path = playbook_path()
 
     if os.path.isfile(data_path + '/env/ssh_key') is True:
-        return "SSH Key Already Exists"
+        sshkey_id = open(data_path + '/env/ssh_key.id').read()
+        return [int(key) for key in [sshkey_id]]
 
-    runner = ansible_runner.run(private_data_dir=data_path, playbook='local-sshkeygen.yml',
-                                host_pattern='localhost', extravars={"PATH": data_path}, quiet=True)
-    droplets.add_sshkey(DO_API_TOKEN)
+    ansible_runner.run(private_data_dir=data_path, playbook='local-sshkeygen.yml',
+                       host_pattern='localhost', extravars={"PATH": data_path}, quiet=True)
+    sshkey_id = droplets.add_sshkey(DO_API_TOKEN)
 
-    # TODO - Return something proper, the key?
-    return runner.status
+    return [sshkey_id]
 
 
 def deploy_openvpn(ip, email):
