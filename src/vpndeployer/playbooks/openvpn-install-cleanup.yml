@@ -1,6 +1,7 @@
 ---
 - name: OpenVPN Install Cleanup
-  hosts: localhost
+  hosts: all
+  remote_user: root
 
   tasks:
 
