@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import ansible_runner
-from pathlib import Path
 import os
+from pathlib import Path
 from vpndeployer import droplets
 
 
