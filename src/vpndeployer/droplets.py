@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import requests
 import digitalocean
-from vpndeployer import ansible
 import tenacity
+from vpndeployer import ansible
 
 
 class DropletNotFound(Exception):

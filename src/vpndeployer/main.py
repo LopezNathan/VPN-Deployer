@@ -57,7 +57,7 @@ def main():
 
     ansible.deploy_openvpn(ip=args.ip, email=args.email)
 
-    # TODO - Add proper checking into the deploy, tenacity (below) should no longer be needed though.
+    # TODO - Add proper checking into the deploy, tenacity should no longer be needed though.
     print(
         f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
 
@@ -66,13 +66,3 @@ def main():
     time.sleep(300)
     ansible.cleanup_openvpn()
     print("Cleanup completed! Don't forget to delete the droplet after you're done.")
-
-    # @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20), retry=tenacity.retry_if_exception_type(IOError))
-    # def check_deploy(droplet_ip):
-    #     response = requests.get(f"http://{droplet_ip}/client.ovpn")
-    #     if response.status_code == 200:
-    #         raise IOError("Download File Unreachable!")
-    #     else:
-    #         print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
-
-    # check_deploy(droplet_ip=droplet_ip)
