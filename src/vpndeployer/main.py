@@ -53,7 +53,7 @@ def main():
     droplet_ip = droplets.get_droplet_ip(
         name=args.name, api_token=DO_API_TOKEN)
 
-    droplets.check_droplet_connection(ip=droplet_ip)
+    ansible.check_droplet_connection()
 
     ansible.deploy_openvpn(ip=args.ip, email=args.email)
 

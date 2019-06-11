@@ -3,6 +3,7 @@ import ansible_runner
 from pathlib import Path
 import os
 from vpndeployer import droplets
+import tenacity
 
 
 def playbook_path():
@@ -24,6 +25,16 @@ def gen_sshkey(DO_API_TOKEN):
     sshkey_id = droplets.add_sshkey(DO_API_TOKEN)
 
     return [sshkey_id]
+
+
+@tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(40), reraise=True)
+def check_droplet_connection():
+    data_path = playbook_path()
+    runner = ansible_runner.run(private_data_dir=data_path, playbook='droplet_connection.yml',
+                                host_pattern='VPN-*', quiet=True)
+
+    # TODO - Return something proper, the key?
+    return runner.status
 
 
 def deploy_openvpn(ip, email):
