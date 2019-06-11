@@ -57,7 +57,7 @@ def get_droplet_ip(name, api_token):
     return droplet_ip
 
 
-@tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20), reraise=True)
+@tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(40), reraise=True)
 def check_droplet_connection(ip):
     # Temporary fix due to deprecation warnings. Awaiting https://github.com/paramiko/paramiko/pull/1379
     warnings.filterwarnings(action='ignore', module='.*paramiko.*')
@@ -74,13 +74,9 @@ def add_sshkey(api_token):
     public_key = open(data_path + '/env/ssh_key.pub').read()
     addkey = digitalocean.SSHKey(
         token=api_token, name='VPN-Deployer', public_key=public_key)
+    addkey.create()
 
-    return addkey.create()
+    with open(data_path + '/env/ssh_key.id', 'w+') as f:
+        f.write(str(addkey.id))
 
-
-def get_sshkey_fingerprint(api_token):
-    manager = digitalocean.Manager(token=api_token)
-    sshkeys = manager.get_all_sshkeys()
-    fingerprint = [str(re.findall('[0-9]* VPN-Deployer', str(sshkeys)))[2:10]]
-
-    return [int(key) for key in fingerprint]
+    return addkey.id
