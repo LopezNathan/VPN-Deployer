@@ -61,6 +61,12 @@ def main():
     print(
         f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
 
+    print("\nStarting the cleanup in 5 minutes...")
+    # Better way to pause after the deploy?
+    time.sleep(300)
+    ansible.cleanup_openvpn()
+    print("Cleanup completed! Don't forget to delete the droplet after you're done.")
+
     # @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_fixed(20), retry=tenacity.retry_if_exception_type(IOError))
     # def check_deploy(droplet_ip):
     #     response = requests.get(f"http://{droplet_ip}/client.ovpn")

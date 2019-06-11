@@ -42,3 +42,12 @@ def deploy_openvpn(ip, email):
 
     # TODO - Return something proper, the key?
     return runner.status
+
+
+def cleanup_openvpn():
+    data_path = playbook_path()
+    runner = ansible_runner.run(private_data_dir=data_path, playbook='openvpn-install-cleanup.yml',
+                                host_pattern='VPN-*', quiet=True)
+
+    # TODO - Return something proper, the key?
+    return runner.status
