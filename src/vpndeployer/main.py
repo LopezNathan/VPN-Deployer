@@ -9,12 +9,8 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="VPN Deploy Script with DigitalOcean")
 
-    avaialble_distros = [
+    available_distros = [
         'centos-7-x64',
-        'fedora-27-x64',
-        'fedora-28-x64',
-        'ubuntu-18-10-x64',
-        'ubuntu-14-04-x64',
     ]
 
     parser.add_argument("--ip", dest="ip", help="Your IP Address")
@@ -24,7 +20,7 @@ def parse_args():
                         dest="name", help="Droplet Name")
     parser.add_argument("--region", default='nyc1',
                         dest="region", help="Droplet Region")
-    parser.add_argument("--image", default='ubuntu-18-10-x64', dest="image", choices=avaialble_distros,
+    parser.add_argument("--image", default='centos-7-x64', dest="image", choices=available_distros,
                         help="Droplet Distribution Image")
 
     return parser.parse_args()
