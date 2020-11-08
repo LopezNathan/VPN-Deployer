@@ -45,9 +45,9 @@ def get_droplet_ip(name, api_token):
         raise DropletNotFound('Droplet Not Found')
 
     for item in droplet_vpn['networks']['v4']:
-        # TODO - Grab first IP from json array without a break
-        droplet_ip = item['ip_address']
-        break
+        if item['type'] == 'public':
+            droplet_ip = item['ip_address']
+            break
     else:
         raise IPNotFound('Droplet IP Not Found')
 
