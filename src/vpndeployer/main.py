@@ -71,7 +71,8 @@ def main():
     ssh.test_connection(droplet_ip)
 
     openvpn.deploy(
-        ip=args.ip,
+        instance_name=args.name,
+        client_ip=args.ip,
         email=args.email
     )
 
@@ -81,5 +82,5 @@ def main():
     input("\nPress Enter to proceed with download link cleanup...")
 
     print("\nCleanup Started!")
-    openvpn.cleanup()
+    openvpn.cleanup(instance_name=args.name)
     print("\nCleanup Completed! Don't forget to delete the instance after you're done.")

@@ -1,6 +1,6 @@
 ---
 - name: OpenVPN Install Cleanup
-  hosts: all
+  hosts: "{{ NAME }}"
   remote_user: root
 
   tasks:

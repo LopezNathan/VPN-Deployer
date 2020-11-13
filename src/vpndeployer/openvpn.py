@@ -3,13 +3,16 @@ import ansible_runner
 from vpndeployer import ansible_data
 
 
-def deploy(ip, email):
+def deploy(instance_name, client_ip, email):
     data_path = ansible_data.playbook_path()
     runner = ansible_runner.run(
         private_data_dir=data_path,
         playbook='deploy_openvpn.yml',
-        host_pattern='VPN-*',
-        extravars={"IP": ip, "EMAIL": email},
+        extravars={
+            "NAME": instance_name,
+            "IP": client_ip,
+            "EMAIL": email
+        },
         quiet=True
     )
 
@@ -17,12 +20,12 @@ def deploy(ip, email):
     return runner.status
 
 
-def cleanup():
+def cleanup(instance_name):
     data_path = ansible_data.playbook_path()
     runner = ansible_runner.run(
         private_data_dir=data_path,
         playbook='cleanup.yml',
-        host_pattern='VPN-*',
+        extravars={"NAME": instance_name},
         quiet=True
     )
 

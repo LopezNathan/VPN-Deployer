@@ -1,6 +1,6 @@
 ---
 - name: OpenVPN Install
-  hosts: all
+  hosts: "{{ NAME }}"
   remote_user: root
 
   vars:
@@ -11,7 +11,7 @@
 
   # Temporary fix to prevent playbook failing due to existing apt processes.
   # Open issue: https://github.com/ansible/ansible/issues/51663 & https://github.com/ansible/ansible/issues/25414
-  - name: Wait for automatic system updates
+  - name: Wait for Automatic System Updates
     become: true
     shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 1; done;
     with_items:
