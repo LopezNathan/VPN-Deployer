@@ -2,15 +2,8 @@
 import requests
 import digitalocean
 import tenacity
-from vpndeployer import ansible
-
-
-class DropletNotFound(Exception):
-    """Droplet cannot be found."""
-
-
-class IPNotFound(Exception):
-    """Droplet Public IP cannot be found."""
+import ansible_runner
+from vpndeployer import ansible_data
 
 
 def create_droplet(api_token, ip, name, region, image, email, sshkey):
@@ -31,6 +24,14 @@ def create_droplet(api_token, ip, name, region, image, email, sshkey):
     )
 
     return droplet.create()
+
+
+class DropletNotFound(Exception):
+    """Droplet cannot be found."""
+
+
+class IPNotFound(Exception):
+    """Droplet Public IP cannot be found."""
 
 
 @tenacity.retry(stop=tenacity.stop_after_attempt(10), wait=tenacity.wait_fixed(2), reraise=True)
@@ -55,7 +56,7 @@ def get_droplet_ip(name, api_token):
 
 
 def add_sshkey(api_token):
-    data_path = ansible.playbook_path()
+    data_path = ansible_data.playbook_path()
     public_key = open(data_path + '/env/ssh_key.pub').read()
     addkey = digitalocean.SSHKey(
         token=api_token, name='VPN-Deployer', public_key=public_key)
@@ -65,3 +66,12 @@ def add_sshkey(api_token):
         f.write(str(addkey.id))
 
     return addkey.id
+
+
+def check_droplet_connection():
+    data_path = ansible_data.playbook_path()
+    runner = ansible_runner.run(private_data_dir=data_path, playbook='droplet_connection.yml',
+                                host_pattern='VPN-*', quiet=True)
+
+    # TODO - Return something proper
+    return runner.status

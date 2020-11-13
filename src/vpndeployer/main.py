@@ -2,7 +2,7 @@
 import argparse
 import time
 import requests
-from vpndeployer import auth, droplets, ansible
+from vpndeployer import auth, instance_do, openvpn, ssh
 
 
 def parse_args():
@@ -38,20 +38,20 @@ def main():
     if args.name == "VPN":
         args.name = args.name + "-" + str(time.time())
 
-    sshkey = ansible.gen_sshkey(DO_API_TOKEN)
+    sshkey = ssh.gen_sshkey(DO_API_TOKEN)
 
     print("\nDeploy Started!")
     print("This process typically takes less than 5 minutes.\n")
 
-    droplets.create_droplet(ip=args.ip, name=args.name, region=args.region,
-                            image=args.image, email=args.email, sshkey=sshkey, api_token=DO_API_TOKEN)
+    instance_do.create_droplet(ip=args.ip, name=args.name, region=args.region,
+                               image=args.image, email=args.email, sshkey=sshkey, api_token=DO_API_TOKEN)
 
-    droplet_ip = droplets.get_droplet_ip(
+    droplet_ip = instance_do.get_droplet_ip(
         name=args.name, api_token=DO_API_TOKEN)
 
-    ansible.check_droplet_connection()
+    instance_do.check_droplet_connection()
 
-    ansible.deploy_openvpn(ip=args.ip, email=args.email)
+    openvpn.deploy_openvpn(ip=args.ip, email=args.email)
 
     # TODO - Add proper checking into the deploy, tenacity should no longer be needed though.
     print(
@@ -60,5 +60,5 @@ def main():
     print("\nStarting the cleanup in 5 minutes...")
     # Better way to pause after the deploy?
     time.sleep(300)
-    ansible.cleanup_openvpn()
+    openvpn.cleanup_openvpn()
     print("Cleanup completed! Don't forget to delete the droplet after you're done.")
