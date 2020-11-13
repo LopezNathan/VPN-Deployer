@@ -1,9 +1,9 @@
 # VPN Deployer
 
-## Simple OpenVPN Deploy Script to DigitalOcean Cloud
+## Simple OpenVPN Deploy CLI Tool
 
-This script will install OpenVPN utilizing the [OpenVPN Installer by Angristan](https://github.com/Angristan/OpenVPN-install) on a DigitalOcean Droplet.
-Once OpenVPN has been installed, NGINX is installed and a link is provided to download the OpenVPN Client file. This link will only be available for 5 minutes before NGINX is removed.
+This CLI tool will install OpenVPN utilizing the [OpenVPN Installer by Angristan](https://github.com/Angristan/OpenVPN-install) on a DigitalOcean Droplet.
+Once OpenVPN has been installed, NGINX is installed and a link is provided to download the OpenVPN Client file.
 
 **This is only intended for short-term/one-time use, as currently no major security protection is added to the base server.**
 
@@ -24,18 +24,17 @@ $ vpndeployer --help
 
 usage: vpndeployer [-h] [--ip IP] [--email EMAIL] [--name NAME]
                    [--region REGION]
-                   [--image {centos-7-x64,fedora-27-x64,fedora-28-x64,ubuntu-18-10-x64,ubuntu-14-04-x64}]
+                   [--image {centos-7-x64}]
 
-VPN Deploy Script with DigitalOcean
+VPN Deploy CLI Tool
 
 optional arguments:
-  -h, --help            show this help message and exit
-  --ip IP               Your IP Address
-  --email EMAIL         Email Address for OpenVPN download link
-  --name NAME           Droplet Name
-  --region REGION       Droplet Region
-  --image {centos-7-x64,fedora-27-x64,fedora-28-x64,ubuntu-18-10-x64,ubuntu-14-04-x64}
-                        Droplet Distribution Image
+  --ip IP               Client IP Address
+  --email EMAIL         Email Address for OpenVPN Download Link
+  --name NAME           Instance Name
+  --region REGION       Instance Region
+  --image {centos-7-x64}
+                        Instance Distribution Image
 ```
 
 ### Example
@@ -44,7 +43,7 @@ optional arguments:
 
 - You will be prompted for your [DigitalOcean API Token](https://www.digitalocean.com/docs/api/create-personal-access-token/). This is only passed through `getpass` to the DigitalOcean API during the creation of the droplet and obtaining the droplet IP.
 
-Once the installer script has completed, it will output the OpenVPN download link. This link automatically expires in 5 minutes.
+Once the installer has completed, it will output the OpenVPN download link. This link automatically expires in 5 minutes.
 
 ## Legacy Deploy Options
 

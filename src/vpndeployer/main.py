@@ -7,7 +7,7 @@ from vpndeployer import auth, instance_do, openvpn, ssh
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="VPN Deploy Script with DigitalOcean")
+        description="OpenVPN Deploy CLI Tool")
 
     available_distros = [
         'centos-7-x64',

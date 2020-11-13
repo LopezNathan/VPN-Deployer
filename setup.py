@@ -10,7 +10,7 @@ setup(
     version=version,
     author='Nathan Lopez',
     author_email='contact@lopeznathan.com',
-    description='Fully Install OpenVPN on DigitalOcean Automatically',
+    description='OpenVPN Deploy CLI Tool',
     url='https://github.com/LopezNathan/vpn-deployer',
     packages=find_packages('src'),
     package_dir={'': 'src'},
