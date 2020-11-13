@@ -24,7 +24,7 @@ $ vpndeployer --help
 
 usage: vpndeployer [-h] [--ip IP] [--email EMAIL] [--name NAME]
                    [--region REGION]
-                   [--image {centos-7-x64}]
+                   [--image {centos-7-x64,centos-8-x64,ubuntu-16-04-x64,ubuntu-18-04-x64,ubuntu-20-04-x64,debian-9-x64,debian-10-x64}]
 
 VPN Deploy CLI Tool
 
@@ -33,7 +33,7 @@ optional arguments:
   --email EMAIL         Email Address for OpenVPN Download Link
   --name NAME           Instance Name
   --region REGION       Instance Region
-  --image {centos-7-x64}
+  --image {centos-7-x64,centos-8-x64,ubuntu-16-04-x64,ubuntu-18-04-x64,ubuntu-20-04-x64,debian-9-x64,debian-10-x64}
                         Instance Distribution Image
 ```
 

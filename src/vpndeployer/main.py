@@ -11,6 +11,12 @@ def parse_args():
 
     available_distros = [
         'centos-7-x64',
+        'centos-8-x64',
+        'ubuntu-16-04-x64',
+        'ubuntu-18-04-x64',
+        'ubuntu-20-04-x64',
+        'debian-9-x64',
+        'debian-10-x64',
     ]
 
     parser.add_argument("--ip", dest="ip",
@@ -29,7 +35,7 @@ def parse_args():
                         )
     parser.add_argument("--image", dest="image",
                         choices=available_distros,
-                        default='centos-7-x64',
+                        default='centos-8-x64',
                         help="Instance Distribution Image"
                         )
 
