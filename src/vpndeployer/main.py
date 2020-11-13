@@ -78,8 +78,8 @@ def main():
     # TODO - Add proper checking into the deploy, tenacity should no longer be needed though.
     print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
 
-    print("\nStarting the cleanup in 5 minutes...")
-    # Better way to pause after the deploy?
-    time.sleep(300)
+    input("\nPress Enter to proceed with download link cleanup...")
+
+    print("\nCleanup Started!")
     openvpn.cleanup()
-    print("Cleanup completed! Don't forget to delete the droplet after you're done.")
+    print("\nCleanup Completed! Don't forget to delete the instance after you're done.")
