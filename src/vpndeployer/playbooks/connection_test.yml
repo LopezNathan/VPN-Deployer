@@ -1,12 +1,12 @@
 ---
-- name: Attempt Droplet Connection
+- name: Attempt Instance Connection
   hosts: all
   remote_user: root
   gather_facts: no
 
   tasks:
 
-  - name: Attempt Connection after 40 seconds
+  - name: Attempt Connection After 40 Seconds
     wait_for_connection:
       delay: 40
       timeout: 120

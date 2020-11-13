@@ -93,7 +93,7 @@
   - name: Download OpenVPN Installer
     get_url:
       url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/src/vpndeployer/playbooks/openvpn-install.sh
-      dest: /root/openvpn-install.sh
+      dest: /root/install_openvpn.sh
       mode: 0755
     when: openvpn_status.stat.exists == False
 
@@ -101,7 +101,7 @@
     environment:
       AUTO_INSTALL: y
       CONTINUE: y
-    shell: /root/openvpn-install.sh
+    shell: /root/install_openvpn.sh
     when: openvpn_status.stat.exists == False
 
   - name: Copy OpenVPN Config to NGINX Path

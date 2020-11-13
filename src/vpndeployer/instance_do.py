@@ -70,7 +70,7 @@ def add_sshkey(api_token):
 
 def check_droplet_connection():
     data_path = ansible_data.playbook_path()
-    runner = ansible_runner.run(private_data_dir=data_path, playbook='droplet_connection.yml',
+    runner = ansible_runner.run(private_data_dir=data_path, playbook='connection_test.yml',
                                 host_pattern='VPN-*', quiet=True)
 
     # TODO - Return something proper
