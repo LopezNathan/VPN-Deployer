@@ -34,10 +34,19 @@ class IPNotFound(Exception):
     """Droplet Public IP cannot be found."""
 
 
-@tenacity.retry(stop=tenacity.stop_after_attempt(10), wait=tenacity.wait_fixed(2), reraise=True)
+@tenacity.retry(
+    stop=tenacity.stop_after_attempt(10),
+    wait=tenacity.wait_fixed(2),
+    reraise=True
+)
 def get_ip(name, api_token):
-    instance_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={
-                                 "Authorization": "Bearer %s" % api_token, "Content-Type": "application/json"})
+    instance_list = requests.get(
+        f"https://api.digitalocean.com/v2/droplets",
+        headers={
+            "Authorization": "Bearer %s" % api_token,
+            "Content-Type": "application/json"
+        }
+    )
     for item in instance_list.json()['droplets']:
         if item['name'] == name:
             instance = item
@@ -59,7 +68,10 @@ def add_key(api_token):
     data_path = ansible_data.playbook_path()
     public_key = open(data_path + '/env/ssh_key.pub').read()
     key = digitalocean.SSHKey(
-        token=api_token, name='VPN-Deployer', public_key=public_key)
+        token=api_token,
+        name='VPN-Deployer',
+        public_key=public_key
+    )
     key.create()
 
     with open(data_path + '/env/ssh_key.id', 'w+') as f:
@@ -70,8 +82,12 @@ def add_key(api_token):
 
 def test_instance_connection():
     data_path = ansible_data.playbook_path()
-    runner = ansible_runner.run(private_data_dir=data_path, playbook='connection_test.yml',
-                                host_pattern='VPN-*', quiet=True)
+    runner = ansible_runner.run(
+        private_data_dir=data_path,
+        playbook='connection_test.yml',
+        host_pattern='VPN-*',
+        quiet=True
+    )
 
     # TODO - Return something proper
     return runner.status
