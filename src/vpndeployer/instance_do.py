@@ -6,8 +6,8 @@ import ansible_runner
 from vpndeployer import ansible_data
 
 
-def create_droplet(api_token, ip, name, region, image, email, sshkey):
-    droplet = digitalocean.Droplet(
+def create_instance(api_token, ip, name, region, image, email, sshkey):
+    instance = digitalocean.Droplet(
         token=f'{api_token}',
         name=f'{name}',
         region=f'{region}',
@@ -23,10 +23,10 @@ def create_droplet(api_token, ip, name, region, image, email, sshkey):
     """,
     )
 
-    return droplet.create()
+    return instance.create()
 
 
-class DropletNotFound(Exception):
+class InstanceNotFound(Exception):
     """Droplet cannot be found."""
 
 
@@ -35,40 +35,40 @@ class IPNotFound(Exception):
 
 
 @tenacity.retry(stop=tenacity.stop_after_attempt(10), wait=tenacity.wait_fixed(2), reraise=True)
-def get_droplet_ip(name, api_token):
-    droplet_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={
-                                "Authorization": "Bearer %s" % api_token, "Content-Type": "application/json"})
-    for item in droplet_list.json()['droplets']:
+def get_ip(name, api_token):
+    instance_list = requests.get(f"https://api.digitalocean.com/v2/droplets", headers={
+                                 "Authorization": "Bearer %s" % api_token, "Content-Type": "application/json"})
+    for item in instance_list.json()['droplets']:
         if item['name'] == name:
-            droplet_vpn = item
+            instance = item
             break
     else:
-        raise DropletNotFound('Droplet Not Found')
+        raise InstanceNotFound('Instance Not Found')
 
-    for item in droplet_vpn['networks']['v4']:
+    for item in instance['networks']['v4']:
         if item['type'] == 'public':
-            droplet_ip = item['ip_address']
+            ip = item['ip_address']
             break
     else:
-        raise IPNotFound('Droplet IP Not Found')
+        raise IPNotFound('Instance IP Not Found')
 
-    return droplet_ip
+    return ip
 
 
-def add_sshkey(api_token):
+def add_key(api_token):
     data_path = ansible_data.playbook_path()
     public_key = open(data_path + '/env/ssh_key.pub').read()
-    addkey = digitalocean.SSHKey(
+    key = digitalocean.SSHKey(
         token=api_token, name='VPN-Deployer', public_key=public_key)
-    addkey.create()
+    key.create()
 
     with open(data_path + '/env/ssh_key.id', 'w+') as f:
-        f.write(str(addkey.id))
+        f.write(str(key.id))
 
-    return addkey.id
+    return key.id
 
 
-def check_droplet_connection():
+def test_instance_connection():
     data_path = ansible_data.playbook_path()
     runner = ansible_runner.run(private_data_dir=data_path, playbook='connection_test.yml',
                                 host_pattern='VPN-*', quiet=True)
