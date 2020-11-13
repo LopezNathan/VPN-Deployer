@@ -51,7 +51,7 @@ def main():
     ssh_key = ssh.generate_key(DO_API_TOKEN)
 
     print("\nDeploy Started!")
-    print("This process typically takes less than 5 minutes.\n")
+    print("This process typically takes less than 3 minutes.\n")
 
     instance_do.create_instance(
         ip=args.ip,
