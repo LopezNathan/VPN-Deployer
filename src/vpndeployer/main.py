@@ -68,7 +68,7 @@ def main():
         api_token=DO_API_TOKEN
     )
 
-    instance_do.test_instance_connection()
+    ssh.test_connection(droplet_ip)
 
     openvpn.deploy(
         ip=args.ip,

@@ -2,7 +2,6 @@
 import requests
 import digitalocean
 import tenacity
-import ansible_runner
 from vpndeployer import ansible_data
 
 
@@ -78,16 +77,3 @@ def add_key(api_token):
         f.write(str(key.id))
 
     return key.id
-
-
-def test_instance_connection():
-    data_path = ansible_data.playbook_path()
-    runner = ansible_runner.run(
-        private_data_dir=data_path,
-        playbook='connection_test.yml',
-        host_pattern='VPN-*',
-        quiet=True
-    )
-
-    # TODO - Return something proper
-    return runner.status
