@@ -12,7 +12,7 @@ def create_instance(api_token, ip, name, region, image, email, sshkey):
         region=f'{region}',
         image=f'{image}',
         ssh_keys=sshkey,
-        size_slug='512mb',
+        size_slug='s-1vcpu-1gb',
         user_data=f"""#!/bin/bash
     if [[ -e /etc/debian_version ]]; then
         apt-get -y install python-minimal
