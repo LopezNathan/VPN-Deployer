@@ -70,7 +70,13 @@
     shell: IP=$(hostname -I | cut -d' ' -f1); echo -e 'Subject:'' VPN Client Download'"\n"'Download Link:'" http://$IP/client.ovpn" > /root/email.txt
     when: EMAIL != "None"
 
-  - iptables:
+  - name: Ensure IPTables is Present
+    package:
+      name: iptables
+      state: present
+
+  - name: Ensure Client IP is Accepted
+    iptables:
       chain: INPUT
       protocol: tcp
       destination_port: 80
@@ -78,7 +84,8 @@
       jump: ACCEPT
     become: yes
 
-  - iptables:
+  - name: Drop All Unknown IPs
+    iptables:
       chain: INPUT
       protocol: tcp
       destination_port: 80
