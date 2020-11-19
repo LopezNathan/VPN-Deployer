@@ -25,6 +25,10 @@ def parse_args():
         'debian-10-x64',
     ]
 
+    parser.add_argument("--headless", dest="headless",
+                        action='store_true',
+                        help="Automated Deploy - No User Input"
+                        )
     parser.add_argument("--ip", dest="ip",
                         help="Your IP Address"
                         )
@@ -91,7 +95,12 @@ def main():
     # TODO - Add proper checking into the deploy, tenacity should no longer be needed though.
     logger.info(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
 
-    input("\nPress Enter to proceed with download link cleanup...")
+    if args.headless:
+        logger.info("\nStarting download link cleanup in 5 minutes...")
+        # Can this be moved to a background thread?
+        time.sleep(300)
+    else:
+        input("\nPress Enter to proceed with download link cleanup...")
 
     logger.info("\nCleanup Started!")
     openvpn.cleanup(instance_name=args.name)
