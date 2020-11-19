@@ -2,7 +2,13 @@
 import argparse
 import time
 import requests
+import logging
 from vpndeployer import auth, instance_do, openvpn, ssh
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger_handler = logging.StreamHandler()
+logger.addHandler(logger_handler)
 
 
 def parse_args():
@@ -56,8 +62,8 @@ def main():
 
     ssh_key = ssh.generate_key(DO_API_TOKEN)
 
-    print("\nDeploy Started!")
-    print("This process typically takes less than 3 minutes.\n")
+    logger.info("\nDeploy Started!")
+    logger.info("This process typically takes less than 3 minutes.\n")
 
     instance_do.create_instance(
         ip=args.ip,
@@ -83,10 +89,10 @@ def main():
     )
 
     # TODO - Add proper checking into the deploy, tenacity should no longer be needed though.
-    print(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
+    logger.info(f"Deploy Completed!\n Download OpenVPN File: http://{droplet_ip}/client.ovpn")
 
     input("\nPress Enter to proceed with download link cleanup...")
 
-    print("\nCleanup Started!")
+    logger.info("\nCleanup Started!")
     openvpn.cleanup(instance_name=args.name)
-    print("\nCleanup Completed! Don't forget to delete the instance after you're done.")
+    logger.info("\nCleanup Completed! Don't forget to delete the instance after you're done.")
