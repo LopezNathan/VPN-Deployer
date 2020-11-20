@@ -1,6 +1,6 @@
 ---
 - name: OpenVPN Install
-  hosts: all
+  hosts: "{{ NAME }}"
   remote_user: root
 
   vars:
@@ -11,24 +11,24 @@
 
   # Temporary fix to prevent playbook failing due to existing apt processes.
   # Open issue: https://github.com/ansible/ansible/issues/51663 & https://github.com/ansible/ansible/issues/25414
-  - name: Wait for automatic system updates
+  - name: Wait for Automatic System Updates
     become: true
     shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 1; done;
     with_items:
       - lock
       - lock-frontend
 
-  - name: Ensure YUM Packages are Latest Version
-    yum:
-      name: "*"
-      state: latest
-    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  # - name: Ensure YUM Packages are Latest Version
+  #   yum:
+  #     name: "*"
+  #     state: latest
+  #   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-  - name: Ensure APT Packages are Latest Version
-    apt:
-      name: "*"
-      state: latest
-    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  # - name: Ensure APT Packages are Latest Version
+  #   apt:
+  #     name: "*"
+  #     state: latest
+  #   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: Ensure EPEL is Present
     yum:
@@ -70,7 +70,13 @@
     shell: IP=$(hostname -I | cut -d' ' -f1); echo -e 'Subject:'' VPN Client Download'"\n"'Download Link:'" http://$IP/client.ovpn" > /root/email.txt
     when: EMAIL != "None"
 
-  - iptables:
+  - name: Ensure IPTables is Present
+    package:
+      name: iptables
+      state: present
+
+  - name: Ensure Client IP is Accepted
+    iptables:
       chain: INPUT
       protocol: tcp
       destination_port: 80
@@ -78,7 +84,8 @@
       jump: ACCEPT
     become: yes
 
-  - iptables:
+  - name: Drop All Unknown IPs
+    iptables:
       chain: INPUT
       protocol: tcp
       destination_port: 80
@@ -90,10 +97,10 @@
       path: /usr/sbin/openvpn
     register: openvpn_status
 
-  - name: Download OpenVPN Installer
-    get_url:
-      url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/src/vpndeployer/playbooks/openvpn-install.sh
-      dest: /root/openvpn-install.sh
+  - name: Copy OpenVPN Installer
+    copy:
+      src: ./install_openvpn.sh
+      dest: /root/install_openvpn.sh
       mode: 0755
     when: openvpn_status.stat.exists == False
 
@@ -101,7 +108,7 @@
     environment:
       AUTO_INSTALL: y
       CONTINUE: y
-    shell: /root/openvpn-install.sh
+    shell: /root/install_openvpn.sh
     when: openvpn_status.stat.exists == False
 
   - name: Copy OpenVPN Config to NGINX Path
