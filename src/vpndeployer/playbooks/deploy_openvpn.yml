@@ -97,9 +97,9 @@
       path: /usr/sbin/openvpn
     register: openvpn_status
 
-  - name: Download OpenVPN Installer
-    get_url:
-      url: https://raw.githubusercontent.com/LopezNathan/vpn-deployer/master/src/vpndeployer/playbooks/openvpn-install.sh
+  - name: Copy OpenVPN Installer
+    copy:
+      src: ./install_openvpn.sh
       dest: /root/install_openvpn.sh
       mode: 0755
     when: openvpn_status.stat.exists == False
